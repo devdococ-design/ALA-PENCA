@@ -3,82 +3,82 @@
     "nav": {
       "home": "Inicio",
       "catalog": "Catálogo",
-      "hospital": "Hospital",
+      "hospital": "Citas",
       "blog": "Tips",
       "about": "Nosotros",
       "book": "Agendar cita",
-      "location": "Tianguistongo",
+      "location": "México",
       "prev": "Anterior",
       "next": "Siguiente"
     },
     "hero": {
-      "brand": "T-Jardin",
-      "tagline": "Verde que te quiero verde",
-      "lead": "Plantas, cuidados y un hospital verde en Tianguistongo — creciendo hacia un espacio donde también habrá té.",
+      "brand": "ALA-PENCA",
+      "tagline": "Tu marca, tu espacio",
+      "lead": "Plantilla lista para personalizar: catálogo, citas, tips y panel de administración.",
       "ctaPrimary": "Ver catálogo",
-      "ctaSecondary": "Hospital de plantas"
+      "ctaSecondary": "Agendar cita"
     },
     "services": {
       "eyebrow": "Servicios",
-      "title": "Vida verde, del vivero al hospital",
-      "lead": "Vendemos plantas sanas y recuperamos las que necesitan una segunda oportunidad.",
-      "saleTitle": "Venta de plantas",
-      "saleText": "Selección cuidada para interior y exterior, con guía de cuidados incluida en cada maceta vía código QR.",
-      "hospitalTitle": "Hospital de plantas",
-      "hospitalText": "Diagnóstico, tratamiento y seguimiento para plantas enfermas, estresadas o recién trasplantadas.",
-      "cta": "Agendar revisión"
+      "title": "Qué incluye esta plantilla",
+      "lead": "Módulos listos para adaptar a tu negocio o proyecto.",
+      "saleTitle": "Catálogo",
+      "saleText": "Publica productos o ítems con ficha detallada y código QR opcional.",
+      "hospitalTitle": "Agenda de citas",
+      "hospitalText": "Recibe solicitudes de cita con fecha, hora y datos de contacto.",
+      "cta": "Agendar cita"
     },
     "gallery": {
       "eyebrow": "Galería",
-      "title": "Espacios que respiran verde",
-      "lead": "Proyectos y rincones donde las plantas marcan el tono.",
+      "title": "Imágenes de ejemplo",
+      "lead": "Reemplaza estas fotos por las de tu proyecto.",
       "close": "Cerrar"
     },
     "about": {
       "eyebrow": "Sobre nosotros",
-      "title": "Nacimos en Tianguistongo, mirando hacia adelante",
-      "text": "T-Jardin es un juego de palabras y un plan a largo plazo: hoy jardín, venta y hospital de plantas; mañana, un rincón de bebidas con té que complete el doble sentido del nombre. Empezamos cerca de casa para crecer con la comunidad."
+      "title": "Sobre ALA-PENCA",
+      "text": "Este es un texto de marcador. Cuenta aquí la historia de tu marca, tu equipo y tu propuesta de valor."
     },
     "blog": {
       "eyebrow": "Tips",
-      "title": "Guía rápida para cuidar mejor",
-      "lead": "Consejos claros para que tus plantas prosperen en casa.",
-      "readMore": "Leer tip",
-      "all": "Ver todos los tips"
+      "title": "Artículos de ejemplo",
+      "lead": "Publica guías, noticias o consejos desde el panel admin.",
+      "readMore": "Leer más",
+      "all": "Ver todos"
     },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Preguntas frecuentes",
       "items": [
         {
-          "q": "¿Qué incluye el código QR de la maceta?",
-          "a": "Te lleva a la ficha de esa planta: riego, luz, humedad y tips específicos."
+          "q": "¿Puedo cambiar textos e imágenes?",
+          "a": "Sí. Edita las traducciones, el seed y el contenido desde /admin."
         },
         {
-          "q": "¿Cómo funciona el hospital de plantas?",
-          "a": "Agendas una cita, nos cuentas el problema y evaluamos tratamiento y seguimiento."
+          "q": "¿Cómo funciona la agenda de citas?",
+          "a": "El visitante envía una solicitud; tú la gestionas en el panel de administración."
         },
         {
-          "q": "¿Hacen envíos fuera de Tianguistongo?",
-          "a": "Por ahora atendemos de forma local. A medida que crezcamos ampliaremos cobertura."
+          "q": "¿Dónde operan?",
+          "a": "Marcador: México. Actualiza la ubicación cuando definas tu cobertura."
         },
         {
-          "q": "¿El té y la barra de bebidas ya están abiertos?",
-          "a": "Aún no: es la siguiente etapa del proyecto. El jardín viene primero."
+          "q": "¿Esto es contenido definitivo?",
+          "a": "No: son textos de plantilla. Sustitúyelos por tu copy real."
         }
       ]
     },
     "catalog": {
       "eyebrow": "Catálogo",
-      "title": "Plantas con su propia guía",
-      "lead": "Explora especies y abre la ficha completa — la misma que verás al escanear el QR de la maceta.",
+      "title": "Ítems de ejemplo",
+      "lead": "Explora fichas de muestra — la misma vista que puede abrir un código QR.",
       "care": "Cuidados",
       "light": "Luz",
       "water": "Riego",
       "humidity": "Humedad",
       "filterLight": "Filtrar por luz",
       "filterAll": "Todas",
-      "emptyFilter": "No hay plantas con ese tipo de luz.",
+      "emptyFilter": "No hay ítems con ese tipo de luz.",
       "lightOptions": {
         "shade": "Sombra",
         "partial": "Semisombra",
@@ -95,7 +95,7 @@
         "high": "Mucha humedad"
       },
       "back": "Volver al catálogo",
-      "scanHint": "Esta página es el destino del código QR de la maceta."
+      "scanHint": "Esta página es el destino del código QR."
     },
     "cart": {
       "nav": "Carrito",
@@ -117,35 +117,35 @@
       "note": "El pago y la entrega se confirman por contacto. Pronto podrás completar el pedido desde aquí."
     },
     "hospital": {
-      "eyebrow": "Hospital de plantas",
-      "title": "Agenda una revisión",
-      "lead": "Cuéntanos qué le pasa a tu planta y elige un horario preferido.",
+      "eyebrow": "Citas",
+      "title": "Agenda una cita",
+      "lead": "Completa el formulario y elige un horario preferido.",
       "name": "Nombre",
       "email": "Correo",
       "phone": "Teléfono",
-      "issue": "¿Qué le ocurre a la planta?",
+      "issue": "¿En qué podemos ayudarte?",
       "schedule": "Horario de atención",
       "date": "Fecha",
       "time": "Hora",
       "timePlaceholder": "Selecciona un horario",
       "regularHours": "Lunes a viernes, 10:00 a 17:00 (intervalos de 20 min).",
-      "emergencyHours": "Emergencia: también sábado y domingo, 11:00 a 14:00.",
-      "emergency": "Emergencia",
-      "weekdayOnly": "Solo lunes a viernes. Activa Emergencia para sábado o domingo.",
+      "emergencyHours": "Urgente: también sábado y domingo, 11:00 a 14:00.",
+      "emergency": "Urgente",
+      "weekdayOnly": "Solo lunes a viernes. Activa Urgente para sábado o domingo.",
       "pastDate": "Elige una fecha de hoy en adelante.",
       "invalidDate": "Fecha no válida.",
       "required": "Este campo es obligatorio.",
       "emailInvalid": "Ingresa un correo válido.",
       "phoneInvalid": "Ingresa un teléfono de al menos 7 dígitos.",
-      "issueInvalid": "Describe el problema con al menos 5 caracteres.",
+      "issueInvalid": "Describe el motivo con al menos 5 caracteres.",
       "submit": "Agendar",
       "success": "Cita guardada correctamente.",
       "toastOk": "Cita guardada correctamente",
       "error": "No pudimos enviar la solicitud. Intenta de nuevo."
     },
     "footer": {
-      "tagline": "Verde que te quiero verde",
-      "location": "Tianguistongo",
+      "tagline": "Plantilla lista para personalizar",
+      "location": "México",
       "rights": "Todos los derechos reservados.",
       "contactPending": "Contacto próximamente"
     },
@@ -155,7 +155,7 @@
       "password": "Contraseña",
       "enter": "Entrar",
       "dashboard": "Panel",
-      "plants": "Plantas",
+      "plants": "Catálogo",
       "appointments": "Citas",
       "posts": "Tips",
       "logout": "Salir",
@@ -192,7 +192,7 @@
       "designFonts": "Tipografías",
       "designFontsLead": "Elige un par de fuentes para títulos y texto.",
       "fontPair": "Par tipográfico",
-      "fontPreview": "Verde que te quiero verde — vista previa del cuerpo de texto.",
+      "fontPreview": "ALA-PENCA — vista previa del cuerpo de texto.",
       "saveDesign": "Guardar diseño",
       "resetDesign": "Restablecer",
       "designSaved": "Diseño guardado.",
@@ -216,82 +216,82 @@
     "nav": {
       "home": "Home",
       "catalog": "Catalog",
-      "hospital": "Hospital",
+      "hospital": "Bookings",
       "blog": "Tips",
       "about": "About",
       "book": "Book a visit",
-      "location": "Tianguistongo",
+      "location": "Mexico",
       "prev": "Previous",
       "next": "Next"
     },
     "hero": {
-      "brand": "T-Jardin",
-      "tagline": "Verde que te quiero verde",
-      "lead": "Plants, care guides, and a green hospital in Tianguistongo — growing toward a future tea bar that completes the name.",
+      "brand": "ALA-PENCA",
+      "tagline": "Your brand, your space",
+      "lead": "A ready-to-customize starter: catalog, bookings, tips, and an admin panel.",
       "ctaPrimary": "Browse catalog",
-      "ctaSecondary": "Plant hospital"
+      "ctaSecondary": "Book a visit"
     },
     "services": {
       "eyebrow": "Services",
-      "title": "Green life, from nursery to hospital",
-      "lead": "We sell healthy plants and revive the ones that need a second chance.",
-      "saleTitle": "Plant sales",
-      "saleText": "A curated selection for indoors and outdoors, with a care guide on every pot via QR code.",
-      "hospitalTitle": "Plant hospital",
-      "hospitalText": "Diagnosis, treatment, and follow-up for sick, stressed, or freshly transplanted plants.",
-      "cta": "Book a checkup"
+      "title": "What’s in this template",
+      "lead": "Modules ready to adapt to your business or project.",
+      "saleTitle": "Catalog",
+      "saleText": "Publish products or items with a detail page and optional QR code.",
+      "hospitalTitle": "Appointment booking",
+      "hospitalText": "Collect booking requests with date, time, and contact details.",
+      "cta": "Book a visit"
     },
     "gallery": {
       "eyebrow": "Gallery",
-      "title": "Spaces that breathe green",
-      "lead": "Projects and corners where plants set the mood.",
+      "title": "Sample images",
+      "lead": "Replace these photos with your own project visuals.",
       "close": "Close"
     },
     "about": {
       "eyebrow": "About us",
-      "title": "Born in Tianguistongo, looking ahead",
-      "text": "T-Jardin is a wordplay and a long-term plan: today garden, plant sales, and a plant hospital; tomorrow, a drinks corner with tea that completes the double meaning. We start close to home to grow with the community."
+      "title": "About ALA-PENCA",
+      "text": "This is placeholder copy. Tell your brand story, introduce your team, and describe your value proposition here."
     },
     "blog": {
       "eyebrow": "Tips",
-      "title": "A quick guide to better care",
-      "lead": "Clear advice so your plants thrive at home.",
-      "readMore": "Read tip",
-      "all": "See all tips"
+      "title": "Sample articles",
+      "lead": "Publish guides, news, or advice from the admin panel.",
+      "readMore": "Read more",
+      "all": "See all"
     },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Frequently asked questions",
       "items": [
         {
-          "q": "What does the pot QR code include?",
-          "a": "It opens that plant’s care sheet: watering, light, humidity, and specific tips."
+          "q": "Can I change texts and images?",
+          "a": "Yes. Edit translations, the seed data, and content from /admin."
         },
         {
-          "q": "How does the plant hospital work?",
-          "a": "You book a visit, tell us the issue, and we assess treatment and follow-up."
+          "q": "How do bookings work?",
+          "a": "Visitors submit a request; you manage it in the admin panel."
         },
         {
-          "q": "Do you deliver outside Tianguistongo?",
-          "a": "For now we serve locally. Coverage will grow as the project expands."
+          "q": "Where do you operate?",
+          "a": "Placeholder: Mexico. Update the location when you define your coverage."
         },
         {
-          "q": "Is the tea bar open yet?",
-          "a": "Not yet — that’s the next chapter. The garden comes first."
+          "q": "Is this final content?",
+          "a": "No — these are template strings. Replace them with your real copy."
         }
       ]
     },
     "catalog": {
       "eyebrow": "Catalog",
-      "title": "Plants with their own guide",
-      "lead": "Browse species and open the full care sheet — the same one you’ll see when scanning the pot QR.",
+      "title": "Sample items",
+      "lead": "Browse sample detail pages — the same view a QR code can open.",
       "care": "Care",
       "light": "Light",
       "water": "Water",
       "humidity": "Humidity",
       "filterLight": "Filter by light",
       "filterAll": "All",
-      "emptyFilter": "No plants match that light type.",
+      "emptyFilter": "No items match that light type.",
       "lightOptions": {
         "shade": "Shade",
         "partial": "Partial shade",
@@ -308,7 +308,7 @@
         "high": "High humidity"
       },
       "back": "Back to catalog",
-      "scanHint": "This page is the destination of the pot QR code."
+      "scanHint": "This page is the destination of the QR code."
     },
     "cart": {
       "nav": "Cart",
@@ -330,35 +330,35 @@
       "note": "Payment and delivery are confirmed by contact. Soon you’ll be able to complete the order here."
     },
     "hospital": {
-      "eyebrow": "Plant hospital",
-      "title": "Book a checkup",
-      "lead": "Tell us what’s going on with your plant and pick a preferred time.",
+      "eyebrow": "Bookings",
+      "title": "Book a visit",
+      "lead": "Fill in the form and pick a preferred time.",
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
-      "issue": "What’s wrong with the plant?",
+      "issue": "How can we help?",
       "schedule": "Opening hours",
       "date": "Date",
       "time": "Time",
       "timePlaceholder": "Select a time slot",
       "regularHours": "Monday to Friday, 10:00 to 17:00 (20-minute intervals).",
-      "emergencyHours": "Emergency: weekends also available, 11:00 to 14:00.",
-      "emergency": "Emergency",
-      "weekdayOnly": "Weekdays only. Turn on Emergency for Saturday or Sunday.",
+      "emergencyHours": "Urgent: weekends also available, 11:00 to 14:00.",
+      "emergency": "Urgent",
+      "weekdayOnly": "Weekdays only. Turn on Urgent for Saturday or Sunday.",
       "pastDate": "Choose today or a future date.",
       "invalidDate": "Invalid date.",
       "required": "This field is required.",
       "emailInvalid": "Enter a valid email.",
       "phoneInvalid": "Enter a phone number with at least 7 digits.",
-      "issueInvalid": "Describe the issue with at least 5 characters.",
+      "issueInvalid": "Describe the request with at least 5 characters.",
       "submit": "Book",
       "success": "Appointment saved successfully.",
       "toastOk": "Appointment saved successfully",
       "error": "We couldn’t send the request. Please try again."
     },
     "footer": {
-      "tagline": "Verde que te quiero verde",
-      "location": "Tianguistongo",
+      "tagline": "A starter ready to customize",
+      "location": "Mexico",
       "rights": "All rights reserved.",
       "contactPending": "Contact coming soon"
     },
@@ -368,7 +368,7 @@
       "password": "Password",
       "enter": "Sign in",
       "dashboard": "Dashboard",
-      "plants": "Plants",
+      "plants": "Catalog",
       "appointments": "Appointments",
       "posts": "Tips",
       "logout": "Log out",
@@ -405,7 +405,7 @@
       "designFonts": "Typography",
       "designFontsLead": "Pick a font pair for headings and body text.",
       "fontPair": "Font pair",
-      "fontPreview": "Verde que te quiero verde — body text preview.",
+      "fontPreview": "ALA-PENCA — body text preview.",
       "saveDesign": "Save design",
       "resetDesign": "Reset",
       "designSaved": "Design saved.",

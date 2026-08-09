@@ -6,7 +6,7 @@
 
     <header class="welcome">
       <div class="welcome__main">
-        <p class="welcome__eyebrow">T-Jardin</p>
+        <p class="welcome__eyebrow">ALA-PENCA</p>
         <h1 class="welcome__hello">{{ greeting() }}</h1>
         <p class="welcome__date">{{ clockDate() }}</p>
       </div>
@@ -23,7 +23,7 @@
           <div class="info-row__location">
             <span class="stat__label">{{ t('admin.location') }}</span>
             <strong class="stat__value">{{ locationName }}</strong>
-            <span class="stat__detail">Estado de México</span>
+            <span class="stat__detail">México</span>
           </div>
           <div class="info-row__clock" aria-live="polite">
             <span class="stat__label">{{ t('admin.clock') }}</span>
@@ -238,7 +238,7 @@
                 (click)="selectFont(pair.id)"
               >
                 <span class="font-pair__name">{{ pair.label }}</span>
-                <span class="font-pair__preview" [style.fontFamily]="pair.display">T-Jardin</span>
+                <span class="font-pair__preview" [style.fontFamily]="pair.display">ALA-PENCA</span>
                 <span class="font-pair__body" [style.fontFamily]="pair.body">{{ t('admin.fontPreview') }}</span>
               </button>
             }

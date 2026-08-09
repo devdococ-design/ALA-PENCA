@@ -12,6 +12,8 @@
 
 .logo {
   display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 700;

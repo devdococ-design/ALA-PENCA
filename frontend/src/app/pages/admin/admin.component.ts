@@ -44,8 +44,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   private readonly http = inject(HttpClient);
   private readonly fb = inject(FormBuilder);
 
-  readonly adminName = 'Diego';
-  readonly locationName = 'Tianguistongo';
+  readonly adminName = 'Admin';
+  readonly locationName = 'México';
   readonly colorFields = COLOR_FIELDS;
   readonly lightOptions = LIGHT_OPTIONS;
   readonly waterOptions = WATER_OPTIONS;
@@ -558,8 +558,8 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   private loadWeather(): void {
-    const lat = 20.0061;
-    const lon = -99.0385;
+    const lat = 19.4326;
+    const lon = -99.1332;
     const url =
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
       `&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m` +

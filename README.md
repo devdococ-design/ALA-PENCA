@@ -1,30 +1,31 @@
-# T-Jardin
+# ALA-PENCA
 
-Sitio web de **T-Jardin** — venta de plantas, hospital de plantas y guía de cuidados (ES/EN).
+Starter template for **ALA-PENCA** — Angular + NestJS site with public catalog, appointment booking, tips/blog, gallery, and an `/admin` CMS (ES/EN).
 
 ## Stack
 
 - **Frontend:** Angular 19 standalone, SCSS, i18n ES/EN
 - **Backend:** NestJS + Prisma + SQLite
-- **CMS:** panel en `/admin`
+- **CMS:** panel at `/admin`
 
-## Arranque rápido
+## Quick start
 
 ### 1. Backend
 
 ```bash
 cd backend
+cp .env.example .env
 npm install
 npx prisma migrate dev --name init
 npm run prisma:seed
 npm run start:dev
 ```
 
-API en `http://localhost:3000`
+API at `http://localhost:3000`
 
-Admin por defecto:
-- email: `admin@t-jardin.local`
-- password: `admin123`
+Default admin (change after first login):
+- email: `admin@ala-penca.local`
+- password: `change-me`
 
 ### 2. Frontend
 
@@ -34,34 +35,28 @@ npm install
 npm start
 ```
 
-App en `http://localhost:4200`
+App at `http://localhost:4200`
 
-## Rutas públicas
+## Public routes
 
-| Ruta | Uso |
-|------|-----|
-| `/` | Landing (hero, servicios, galería, nosotros, tips, FAQ) |
-| `/catalogo` | Catálogo de plantas |
-| `/p/:slug` | Ficha de planta (destino del QR en macetas) |
-| `/hospital` | Agenda de citas del hospital |
-| `/tips` | Blog / tips de cuidados |
-| `/admin` | CMS (plantas, citas, tips) |
+| Route | Purpose |
+|------|---------|
+| `/` | Landing (hero, services, gallery, about, tips, FAQ) |
+| `/catalogo` | Catalog |
+| `/p/:slug` | Item detail (QR destination) |
+| `/hospital` | Appointment booking |
+| `/tips` | Blog / tips |
+| `/admin` | CMS |
 
-## QR de macetas
+## QR links
 
-El código QR de cada maceta debe apuntar a:
+Point each QR to:
 
-`https://TU-DOMINIO/p/{slug}`
+`https://YOUR-DOMAIN/p/{slug}`
 
-Ejemplo: `/p/monstera-deliciosa`
+Example: `/p/sample-item-one`
 
-## Pendientes (según brief)
+## Notes
 
-- Datos de contacto reales
-- CTA del hero (frase pendiente)
-- Formulario de contacto (sección oculta por ahora)
-- Hosting
-
-## Diseño
-
-Colores: verde bosque, naranja y negro. Tipografías: Fraunces + Manrope. Estilo natural y minimal.
+- Copy branding, contact details, and seed content for your project.
+- Keep secrets in `.env` (never commit them). See `backend/.env.example`.

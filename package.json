@@ -1,5 +1,5 @@
 {
-  "name": "t-jardin",
+  "name": "ala-penca",
   "private": true,
   "scripts": {
     "dev:api": "npm --prefix backend run start:dev",
