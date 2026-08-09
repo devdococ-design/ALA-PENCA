@@ -1,0 +1,321 @@
+<section class="section admin">
+  <div class="container">
+    <div class="admin__top">
+      <button class="btn btn--primary admin__logout" type="button" (click)="auth.logout()">{{ t('admin.logout') }}</button>
+    </div>
+
+    <header class="welcome">
+      <div class="welcome__main">
+        <p class="welcome__eyebrow">T-Jardin</p>
+        <h1 class="welcome__hello">{{ greeting() }}</h1>
+        <p class="welcome__date">{{ clockDate() }}</p>
+      </div>
+
+      <article class="stat stat--summary">
+        <span class="stat__label">{{ t('admin.summary') }}</span>
+        <strong class="stat__value">{{ plants().length }} {{ t('admin.plants') }}</strong>
+        <span class="stat__detail">{{ pendingCount() }} {{ t('admin.pendingAppointments') }}</span>
+        <span class="stat__detail">{{ posts().length }} {{ t('admin.posts') }}</span>
+      </article>
+
+      <article class="stat stat--info">
+        <div class="info-row info-row--header">
+          <div class="info-row__location">
+            <span class="stat__label">{{ t('admin.location') }}</span>
+            <strong class="stat__value">{{ locationName }}</strong>
+            <span class="stat__detail">Estado de México</span>
+          </div>
+          <div class="info-row__clock" aria-live="polite">
+            <span class="stat__label">{{ t('admin.clock') }}</span>
+            <strong class="stat__value stat__value--clock">{{ clockTime() }}</strong>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <span class="stat__label">{{ t('admin.weather') }}</span>
+          @if (weather(); as w) {
+            <strong class="stat__value">{{ w.temp }}°C</strong>
+            <span class="stat__detail">{{ labelForWeather(w.code) }} · {{ t('admin.feelsLike') }} {{ w.feelsLike }}°C</span>
+            <span class="stat__detail">{{ t('admin.humidity') }} {{ w.humidity }}% · {{ t('admin.wind') }} {{ w.wind }} km/h</span>
+          } @else if (weatherError()) {
+            <strong class="stat__value stat__value--soft">{{ t('admin.weatherUnavailable') }}</strong>
+          } @else {
+            <strong class="stat__value stat__value--soft">…</strong>
+          }
+        </div>
+      </article>
+    </header>
+
+    <div class="tabs">
+      <button type="button" [class.is-on]="tab() === 'plants'" (click)="setTab('plants')">{{ t('admin.plants') }}</button>
+      <button type="button" [class.is-on]="tab() === 'appointments'" (click)="setTab('appointments')">{{ t('admin.appointments') }}</button>
+      <button type="button" [class.is-on]="tab() === 'posts'" (click)="setTab('posts')">{{ t('admin.posts') }}</button>
+      <button type="button" [class.is-on]="tab() === 'password'" (click)="setTab('password')">{{ t('admin.passwordTab') }}</button>
+      <button type="button" [class.is-on]="tab() === 'design'" (click)="setTab('design')">{{ t('admin.designTab') }}</button>
+      <button type="button" [class.is-on]="tab() === 'gallery'" (click)="setTab('gallery')">{{ t('admin.galleryTab') }}</button>
+    </div>
+
+    @if (tab() === 'plants') {
+      <div class="panel">
+        <form class="form" [formGroup]="plantForm" (ngSubmit)="savePlant()">
+          <div class="form__grid">
+            <div class="field"><label>Identificador (slug)</label><input formControlName="slug" placeholder="ej. monstera-deliciosa" /></div>
+            <div class="field"><label>Nombre</label><input formControlName="name" /></div>
+            <div class="field"><label>Nombre científico</label><input formControlName="scientificName" /></div>
+            <div class="field"><label>URL de imagen</label><input formControlName="imageUrl" /></div>
+            <div class="field">
+              <label>Precio</label>
+              <input
+                type="text"
+                inputmode="numeric"
+                formControlName="price"
+                placeholder="$0"
+                (blur)="formatPriceField()"
+              />
+            </div>
+            <div class="field full"><label>Descripción</label><textarea formControlName="description" rows="2"></textarea></div>
+            <div class="field full"><label>Cuidados</label><textarea formControlName="care" rows="2"></textarea></div>
+            <div class="field">
+              <label>Luz</label>
+              <select formControlName="light">
+                @for (opt of lightOptions; track opt.value) {
+                  <option [value]="opt.value">{{ opt.labelEs }}</option>
+                }
+              </select>
+            </div>
+            <div class="field">
+              <label>Riego</label>
+              <select formControlName="water">
+                @for (opt of waterOptions; track opt.value) {
+                  <option [value]="opt.value">{{ opt.labelEs }}</option>
+                }
+              </select>
+            </div>
+            <div class="field">
+              <label>Humedad</label>
+              <select formControlName="humidity">
+                @for (opt of humidityOptions; track opt.value) {
+                  <option [value]="opt.value">{{ opt.labelEs }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <label class="check"><input type="checkbox" formControlName="featured" /> Destacada</label>
+          <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
+        </form>
+
+        <div class="table">
+          @for (plant of plants(); track plant.id) {
+            <div class="row">
+              <div>
+                <strong>{{ plant.nameEs }}</strong>
+                <span>/p/{{ plant.slug }}</span>
+              </div>
+              <div class="row__actions">
+                <button type="button" (click)="editPlant(plant)">{{ t('admin.edit') }}</button>
+                <button type="button" (click)="downloadQr(plant)">{{ t('admin.downloadQr') }}</button>
+                <button type="button" (click)="removePlant(plant.id)">{{ t('admin.delete') }}</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (tab() === 'appointments') {
+      <div class="panel table">
+        @for (item of appointments(); track item.id) {
+          <div class="row">
+            <div>
+              <strong>{{ item.customerName }}</strong>
+              <p>{{ item.plantIssue }}</p>
+              <span>{{ item.preferredDate }} · {{ item.status }}</span>
+            </div>
+            <div class="row__actions">
+              <button type="button" (click)="setStatus(item.id, 'CONFIRMED')">Confirmar</button>
+              <button type="button" (click)="setStatus(item.id, 'DONE')">Hecha</button>
+              <button type="button" (click)="setStatus(item.id, 'CANCELLED')">Cancelar</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (tab() === 'posts') {
+      <div class="panel">
+        <form class="form" [formGroup]="postForm" (ngSubmit)="savePost()">
+          <div class="form__grid">
+            <div class="field"><label>Identificador (slug)</label><input formControlName="slug" /></div>
+            <div class="field"><label>Título</label><input formControlName="title" /></div>
+            <div class="field"><label>URL de imagen</label><input formControlName="imageUrl" /></div>
+            <div class="field full"><label>Resumen</label><textarea formControlName="excerpt" rows="2"></textarea></div>
+            <div class="field full"><label>Contenido</label><textarea formControlName="content" rows="4"></textarea></div>
+          </div>
+          <label class="check"><input type="checkbox" formControlName="published" /> Publicado</label>
+          <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
+        </form>
+
+        <div class="table">
+          @for (post of posts(); track post.id) {
+            <div class="row">
+              <div>
+                <strong>{{ post.titleEs }}</strong>
+                <span>/tips/{{ post.slug }}</span>
+              </div>
+              <div class="row__actions">
+                <button type="button" (click)="editPost(post)">{{ t('admin.edit') }}</button>
+                <button type="button" (click)="removePost(post.id)">{{ t('admin.delete') }}</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (tab() === 'password') {
+      <div class="panel">
+        <form class="form password-form" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          <h2 class="password-form__title">{{ t('admin.passwordTab') }}</h2>
+          <div class="field">
+            <label>{{ t('admin.currentPassword') }}</label>
+            <input type="password" formControlName="currentPassword" autocomplete="current-password" />
+          </div>
+          <div class="field">
+            <label>{{ t('admin.newPassword') }}</label>
+            <input type="password" formControlName="newPassword" autocomplete="new-password" />
+          </div>
+          <div class="field">
+            <label>{{ t('admin.confirmPassword') }}</label>
+            <input type="password" formControlName="confirmPassword" autocomplete="new-password" />
+          </div>
+          <button class="btn btn--primary" type="submit">{{ t('admin.changePassword') }}</button>
+          @if (passwordStatus() === 'ok') {
+            <p class="msg msg--ok">{{ t('admin.passwordOk') }}</p>
+          }
+          @if (passwordStatus() === 'error') {
+            <p class="msg msg--err">{{ passwordError() }}</p>
+          }
+        </form>
+      </div>
+    }
+
+    @if (tab() === 'design') {
+      <div class="panel design">
+        <section class="form design__block">
+          <h2>{{ t('admin.designColors') }}</h2>
+          <p class="design__lead">{{ t('admin.designColorsLead') }}</p>
+          <div class="design__colors">
+            @for (field of colorFields; track field.key) {
+              <label class="swatch-field">
+                <span>{{ colorLabel(field) }}</span>
+                <div class="swatch-field__controls">
+                  <input
+                    type="color"
+                    [value]="colorValue(field.key)"
+                    (input)="onColorInput(field.key, $event)"
+                  />
+                  <input
+                    type="text"
+                    [value]="colorValue(field.key)"
+                    (change)="onColorText(field.key, $event)"
+                    maxlength="7"
+                  />
+                </div>
+              </label>
+            }
+          </div>
+        </section>
+
+        <section class="form design__block">
+          <h2>{{ t('admin.designFonts') }}</h2>
+          <p class="design__lead">{{ t('admin.designFontsLead') }}</p>
+          <div class="font-pairs">
+            @for (pair of themeService.fontPairs; track pair.id) {
+              <button
+                type="button"
+                class="font-pair"
+                [class.is-on]="themeService.activeFontPairId() === pair.id"
+                (click)="selectFont(pair.id)"
+              >
+                <span class="font-pair__name">{{ pair.label }}</span>
+                <span class="font-pair__preview" [style.fontFamily]="pair.display">T-Jardin</span>
+                <span class="font-pair__body" [style.fontFamily]="pair.body">{{ t('admin.fontPreview') }}</span>
+              </button>
+            }
+          </div>
+        </section>
+
+        <div class="design__actions">
+          <button class="btn btn--primary" type="button" (click)="saveDesign()">{{ t('admin.saveDesign') }}</button>
+          <button class="btn btn--outline" type="button" (click)="resetDesign()">{{ t('admin.resetDesign') }}</button>
+        </div>
+        @if (designStatus() === 'ok' || designStatus() === 'reset') {
+          <p class="msg msg--ok">{{ designMessage() }}</p>
+        }
+        @if (designStatus() === 'error') {
+          <p class="msg msg--err">{{ designMessage() }}</p>
+        }
+      </div>
+    }
+
+    @if (tab() === 'gallery') {
+      <div class="panel">
+        <form class="form" [formGroup]="galleryForm" (ngSubmit)="saveGalleryItem()">
+          <h2 class="password-form__title">{{ t('admin.galleryTab') }}</h2>
+          <p class="design__lead">{{ t('admin.galleryLead') }}</p>
+
+          <div class="gallery-upload">
+            <div class="field">
+              <label>{{ t('admin.galleryUpload') }}</label>
+              <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onGalleryFile($event)" />
+            </div>
+            @if (galleryPreview()) {
+              <img class="gallery-upload__preview" [src]="galleryPreview()" alt="" />
+            }
+          </div>
+
+          <div class="form__grid">
+            <div class="field full">
+              <label>{{ t('admin.galleryDesc') }}</label>
+              <textarea formControlName="description" rows="3"></textarea>
+            </div>
+            <div class="field">
+              <label>{{ t('admin.galleryOrder') }}</label>
+              <input type="number" formControlName="sortOrder" />
+            </div>
+          </div>
+
+          <div class="design__actions">
+            <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
+            <button class="btn btn--outline" type="button" (click)="resetGalleryForm()">{{ t('admin.galleryNew') }}</button>
+          </div>
+
+          @if (galleryStatus() === 'ok') {
+            <p class="msg msg--ok">{{ galleryMessage() }}</p>
+          }
+          @if (galleryStatus() === 'error') {
+            <p class="msg msg--err">{{ galleryMessage() }}</p>
+          }
+        </form>
+
+        <div class="table gallery-admin-list">
+          @for (item of galleryItems(); track item.id) {
+            <div class="row gallery-admin-row">
+              <img [src]="mediaUrl(item.imageUrl)" [alt]="item.descriptionEs" />
+              <div>
+                <strong>{{ item.descriptionEs || ('#' + item.id) }}</strong>
+                <span>#{{ item.sortOrder }}</span>
+              </div>
+              <div class="row__actions">
+                <button type="button" (click)="editGalleryItem(item)">{{ t('admin.edit') }}</button>
+                <button type="button" (click)="removeGalleryItem(item.id)">{{ t('admin.delete') }}</button>
+              </div>
+            </div>
+          } @empty {
+            <p class="design__lead">{{ t('admin.galleryEmpty') }}</p>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

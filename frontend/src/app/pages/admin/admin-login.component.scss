@@ -1,0 +1,19 @@
+.box {
+  max-width: 26rem;
+}
+
+h1 {
+  font-size: 2rem;
+  color: var(--black);
+  margin-bottom: 1.25rem;
+}
+
+form {
+  display: grid;
+  gap: 1rem;
+}
+
+.err {
+  color: #b42318;
+  font-weight: 600;
+}

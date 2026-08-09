@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Plant {
+  id              Int      @id @default(autoincrement())
+  slug            String   @unique
+  nameEs          String
+  nameEn          String
+  scientificName  String
+  descriptionEs   String
+  descriptionEn   String
+  careEs          String
+  careEn          String
+  lightEs         String
+  lightEn         String
+  waterEs         String
+  waterEn         String
+  humidityEs      String
+  humidityEn      String
+  imageUrl        String
+  category        String   @default("interior")
+  price           Float?
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model BlogPost {
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  titleEs    String
+  titleEn    String
+  excerptEs  String
+  excerptEn  String
+  contentEs  String
+  contentEn  String
+  imageUrl   String
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Appointment {
+  id            Int      @id @default(autoincrement())
+  customerName  String
+  email         String
+  phone         String
+  plantIssue    String
+  preferredDate String
+  status        String   @default("PENDING")
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SiteSetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model GalleryItem {
+  id             Int      @id @default(autoincrement())
+  imageUrl       String
+  descriptionEs  String   @default("")
+  descriptionEn  String   @default("")
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

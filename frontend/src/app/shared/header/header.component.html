@@ -1,0 +1,35 @@
+<header class="header" [class.header--open]="menuOpen">
+  <div class="header__inner">
+    <a routerLink="/" class="logo" (click)="close()">
+      <span class="logo__row">
+        <span class="logo__mark">T</span>
+        <span class="logo__text">Jardin</span>
+      </span>
+      <span class="logo__place">{{ t('nav.location') }}</span>
+    </a>
+
+    <button class="burger" type="button" (click)="toggle()" [attr.aria-expanded]="menuOpen" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+
+    <nav class="nav" [class.nav--open]="menuOpen">
+      <a routerLink="/" fragment="servicios" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" (click)="close()">{{ t('nav.home') }}</a>
+      <a routerLink="/catalogo" routerLinkActive="is-active" (click)="close()">{{ t('nav.catalog') }}</a>
+      <a routerLink="/hospital" routerLinkActive="is-active" (click)="close()">{{ t('nav.hospital') }}</a>
+      <a routerLink="/tips" routerLinkActive="is-active" (click)="close()">{{ t('nav.blog') }}</a>
+      <a routerLink="/" fragment="nosotros" (click)="close()">{{ t('nav.about') }}</a>
+
+      <a routerLink="/carrito" class="cart-link" routerLinkActive="is-active" (click)="close()" [attr.aria-label]="t('cart.title')">
+        <span>{{ t('cart.nav') }}</span>
+        @if (cart.count() > 0) {
+          <span class="cart-link__badge">{{ cart.count() }}</span>
+        }
+      </a>
+
+      <div class="lang">
+        <button type="button" [class.is-on]="i18n.lang() === 'es'" (click)="setLang('es')">ES</button>
+        <button type="button" [class.is-on]="i18n.lang() === 'en'" (click)="setLang('en')">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>

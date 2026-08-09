@@ -1,0 +1,120 @@
+<section class="section">
+  <div class="container layout">
+    <div>
+      <p class="section__eyebrow">{{ t('hospital.eyebrow') }}</p>
+      <h1 class="section__title">{{ t('hospital.title') }}</h1>
+      <p class="section__lead">{{ t('hospital.lead') }}</p>
+      <div class="visual">
+        <img
+          src="https://images.unsplash.com/photo-1459156212016-c8128e47f1d1?auto=format&fit=crop&w=1000&q=80"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="name">{{ t('hospital.name') }}</label>
+        <input id="name" formControlName="customerName" autocomplete="name" />
+        @if (invalid('customerName')) {
+          <p class="field-error">{{ t('hospital.required') }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="email">{{ t('hospital.email') }}</label>
+        <input id="email" type="email" formControlName="email" autocomplete="email" />
+        @if (invalid('email')) {
+          <p class="field-error">{{ t('hospital.emailInvalid') }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="phone">{{ t('hospital.phone') }}</label>
+        <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
+        @if (invalid('phone')) {
+          <p class="field-error">{{ t('hospital.phoneInvalid') }}</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="issue">{{ t('hospital.issue') }}</label>
+        <textarea id="issue" rows="4" formControlName="plantIssue"></textarea>
+        @if (invalid('plantIssue')) {
+          <p class="field-error">{{ t('hospital.issueInvalid') }}</p>
+        }
+      </div>
+
+      <div class="schedule">
+        <div class="schedule__head">
+          <div>
+            <p class="schedule__label">{{ t('hospital.schedule') }}</p>
+            <p class="schedule__hint">
+              @if (emergency()) {
+                {{ t('hospital.emergencyHours') }}
+              } @else {
+                {{ t('hospital.regularHours') }}
+              }
+            </p>
+          </div>
+          <button
+            type="button"
+            class="btn emergency-btn"
+            [class.is-on]="emergency()"
+            (click)="toggleEmergency()"
+          >
+            {{ t('hospital.emergency') }}
+          </button>
+        </div>
+
+        <div class="schedule__row">
+          <div class="field field--compact">
+            <label for="date">{{ t('hospital.date') }}</label>
+            <input
+              id="date"
+              type="date"
+              formControlName="preferredDate"
+              [min]="minDate"
+              (change)="onDateChange()"
+            />
+            @if (invalid('preferredDate')) {
+              <p class="field-error">{{ t('hospital.required') }}</p>
+            }
+          </div>
+
+          <div class="field field--compact">
+            <label for="time">{{ t('hospital.time') }}</label>
+            <select id="time" formControlName="preferredTime">
+              <option value="">{{ t('hospital.timePlaceholder') }}</option>
+              @for (slot of timeSlots(); track slot) {
+                <option [value]="slot">{{ slot }}</option>
+              }
+            </select>
+            @if (invalid('preferredTime')) {
+              <p class="field-error">{{ t('hospital.required') }}</p>
+            }
+          </div>
+        </div>
+
+        @if (scheduleError()) {
+          <p class="field-error">{{ scheduleError() }}</p>
+        }
+      </div>
+
+      <button class="btn btn--primary" type="submit" [disabled]="submitting()">
+        {{ t('hospital.submit') }}
+      </button>
+
+      @if (status() === 'error') {
+        <p class="msg msg--err">{{ t('hospital.error') }}</p>
+      }
+    </form>
+  </div>
+</section>
+
+@if (toastVisible()) {
+  <div class="toast" role="status" aria-live="polite">
+    <span>{{ t('hospital.toastOk') }}</span>
+    <button type="button" class="toast__close" (click)="dismissToast()" aria-label="Cerrar">×</button>
+  </div>
+}

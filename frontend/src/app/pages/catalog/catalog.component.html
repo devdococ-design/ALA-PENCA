@@ -1,0 +1,53 @@
+<section class="section">
+  <div class="container">
+    <p class="section__eyebrow">{{ t('catalog.eyebrow') }}</p>
+    <h1 class="section__title">{{ t('catalog.title') }}</h1>
+    <p class="section__lead">{{ t('catalog.lead') }}</p>
+
+    <div class="filters">
+      <p class="filters__label">{{ t('catalog.filterLight') }}</p>
+      <div class="filters__chips" role="group" [attr.aria-label]="t('catalog.filterLight')">
+        <button
+          type="button"
+          class="chip"
+          [class.is-on]="lightFilter() === ''"
+          (click)="setLightFilter('')"
+        >
+          {{ t('catalog.filterAll') }}
+        </button>
+        @for (opt of lightOptions; track opt.value) {
+          <button
+            type="button"
+            class="chip"
+            [class.is-on]="lightFilter() === opt.value"
+            (click)="setLightFilter(opt.value)"
+          >
+            {{ t('catalog.lightOptions.' + opt.value) }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="grid">
+      @for (plant of filteredPlants(); track plant.id) {
+        <a class="item" [routerLink]="['/p', plant.slug]">
+          <img [src]="plant.imageUrl" [alt]="name(plant)" loading="lazy" />
+          <div>
+            <h2>{{ name(plant) }}</h2>
+            <p class="sci">{{ plant.scientificName }}</p>
+            <p class="meta">{{ t('catalog.light') }}: {{ lightLabel(plant) }}</p>
+            <p>{{ description(plant) }}</p>
+          </div>
+        </a>
+      } @empty {
+        <p class="empty">
+          @if (plants().length === 0) {
+            Cargando catálogo… / Loading catalog…
+          } @else {
+            {{ t('catalog.emptyFilter') }}
+          }
+        </p>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build
+dist/
+**/dist/
+.angular/
+**/coverage/
+
+# Env & local DB
+.env
+.env.*
+!.env.example
+*.db
+*.db-journal
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+backend/uploads/
+
+# IDE / OS
+.idea/
+.vscode/
+*.log
+.DS_Store
+Thumbs.db
+
+# Prisma / tooling leftovers
+backend/.agents/
+backend/.claude/
+backend/.windsurf/
+backend/skills-lock.json
+backend/generated/

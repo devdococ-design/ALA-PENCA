@@ -1,0 +1,65 @@
+<section class="section">
+  <div class="container">
+    <p class="section__eyebrow">{{ t('cart.eyebrow') }}</p>
+    <div class="cart-head">
+      <h1 class="section__title">{{ t('cart.title') }}</h1>
+      <a routerLink="/catalogo" class="btn btn--outline">{{ t('cart.continue') }}</a>
+    </div>
+
+    @if (cart.items().length === 0) {
+      <p class="empty">{{ t('cart.empty') }}</p>
+      <a routerLink="/catalogo" class="btn btn--primary">{{ t('cart.browse') }}</a>
+    } @else {
+      <div class="cart-layout">
+        <div class="cart-list">
+          @for (item of cart.items(); track item.plantId) {
+            <article class="cart-item">
+              <a class="cart-item__media" [routerLink]="['/p', item.slug]">
+                <img [src]="item.imageUrl" [alt]="name(item)" />
+              </a>
+              <div class="cart-item__body">
+                <a [routerLink]="['/p', item.slug]">
+                  <h2>{{ name(item) }}</h2>
+                </a>
+                <p class="price">{{ money(item.price) }}</p>
+
+                <div class="qty">
+                  <button type="button" (click)="cart.decrement(item.plantId)" [attr.aria-label]="t('cart.decrease')">
+                    −
+                  </button>
+                  <span>{{ item.quantity }}</span>
+                  <button type="button" (click)="cart.increment(item.plantId)" [attr.aria-label]="t('cart.increase')">
+                    +
+                  </button>
+                </div>
+
+                <div class="cart-item__foot">
+                  <strong>{{ lineTotal(item) }}</strong>
+                  <button type="button" class="link-btn" (click)="cart.remove(item.plantId)">
+                    {{ t('cart.remove') }}
+                  </button>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+
+        <aside class="summary">
+          <h2>{{ t('cart.summary') }}</h2>
+          <div class="summary__row">
+            <span>{{ t('cart.items') }}</span>
+            <strong>{{ cart.count() }}</strong>
+          </div>
+          <div class="summary__row summary__row--total">
+            <span>{{ t('cart.total') }}</span>
+            <strong>{{ money(cart.total()) }}</strong>
+          </div>
+          <p class="summary__note">{{ t('cart.note') }}</p>
+          <button type="button" class="btn btn--outline" (click)="cart.clear()">
+            {{ t('cart.clear') }}
+          </button>
+        </aside>
+      </div>
+    }
+  </div>
+</section>

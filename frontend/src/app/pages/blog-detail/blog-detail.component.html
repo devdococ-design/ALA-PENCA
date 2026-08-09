@@ -1,0 +1,12 @@
+<section class="section">
+  <div class="container article">
+    <a routerLink="/tips" class="back">← {{ t('blog.all') }}</a>
+    @if (post(); as p) {
+      <img [src]="p.imageUrl" [alt]="title()" />
+      <h1>{{ title() }}</h1>
+      <div class="body" [innerText]="content()"></div>
+    } @else {
+      <p>…</p>
+    }
+  </div>
+</section>
