@@ -1,24 +1,12 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import QRCode from 'qrcode';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n.service';
 import { ThemeService } from '../../core/theme.service';
 import { COLOR_FIELDS, type ThemeColors } from '../../core/theme.model';
-import type { Appointment, BlogPost, GalleryItem, Plant } from '../../core/models';
-import {
-  HUMIDITY_OPTIONS,
-  LIGHT_OPTIONS,
-  WATER_OPTIONS,
-  normalizeHumidity,
-  normalizeLight,
-  normalizeWater,
-  type HumidityLevel,
-  type LightLevel,
-  type WaterLevel,
-} from '../../core/plant-care';
+import type { Appointment, BlogPost, GalleryItem } from '../../core/models';
 
 interface WeatherInfo {
   temp: number;
@@ -45,14 +33,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
 
   readonly adminName = 'Admin';
-  readonly locationName = 'México';
+  readonly locationName = 'Cuautitlán Izcalli';
   readonly colorFields = COLOR_FIELDS;
-  readonly lightOptions = LIGHT_OPTIONS;
-  readonly waterOptions = WATER_OPTIONS;
-  readonly humidityOptions = HUMIDITY_OPTIONS;
 
-  readonly tab = signal<'plants' | 'appointments' | 'posts' | 'password' | 'design' | 'gallery'>('plants');
-  readonly plants = signal<Plant[]>([]);
+  readonly tab = signal<'appointments' | 'posts' | 'password' | 'design' | 'gallery'>('appointments');
   readonly appointments = signal<Appointment[]>([]);
   readonly posts = signal<BlogPost[]>([]);
   readonly galleryItems = signal<GalleryItem[]>([]);
@@ -72,22 +56,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   readonly weatherError = signal(false);
 
   private clockId: ReturnType<typeof setInterval> | null = null;
-
-  readonly plantForm = this.fb.nonNullable.group({
-    id: [0],
-    slug: [''],
-    name: [''],
-    scientificName: [''],
-    description: [''],
-    care: [''],
-    light: this.fb.nonNullable.control<LightLevel>('partial'),
-    water: this.fb.nonNullable.control<WaterLevel>('moderate'),
-    humidity: this.fb.nonNullable.control<HumidityLevel>('medium'),
-    imageUrl: [''],
-    category: ['interior'],
-    price: [this.formatPrice(0)],
-    featured: [false],
-  });
 
   readonly postForm = this.fb.nonNullable.group({
     id: [0],
@@ -152,7 +120,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     return this.weatherLabel(code);
   }
 
-  setTab(tab: 'plants' | 'appointments' | 'posts' | 'password' | 'design' | 'gallery'): void {
+  setTab(tab: 'appointments' | 'posts' | 'password' | 'design' | 'gallery'): void {
     this.tab.set(tab);
     this.passwordStatus.set('idle');
     this.passwordError.set('');
@@ -164,27 +132,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   mediaUrl(path: string): string {
     return this.api.mediaUrl(path);
-  }
-
-  formatPrice(value: number | string | null | undefined): string {
-    const amount = Math.round(this.parsePrice(value));
-    return new Intl.NumberFormat('es-MX', {
-      style: 'currency',
-      currency: 'MXN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  }
-
-  parsePrice(value: number | string | null | undefined): number {
-    if (typeof value === 'number') return Number.isFinite(value) ? Math.round(value) : 0;
-    const digits = String(value ?? '').replace(/[^\d]/g, '');
-    return digits ? Number(digits) : 0;
-  }
-
-  formatPriceField(): void {
-    const parsed = this.parsePrice(this.plantForm.controls.price.value);
-    this.plantForm.controls.price.setValue(this.formatPrice(parsed));
   }
 
   onGalleryFile(event: Event): void {
@@ -327,98 +274,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   reload(): void {
     const token = this.auth.token();
     if (!token) return;
-    this.api.adminPlants(token).subscribe((plants) => this.plants.set(plants));
     this.api.adminAppointments(token).subscribe((items) => this.appointments.set(items));
     this.api.adminPosts(token).subscribe((posts) => this.posts.set(posts));
     this.api.adminGallery(token).subscribe((items) => this.galleryItems.set(items));
-  }
-
-  editPlant(plant: Plant): void {
-    this.plantForm.patchValue({
-      id: plant.id,
-      slug: plant.slug,
-      name: plant.nameEs || plant.nameEn,
-      scientificName: plant.scientificName,
-      description: plant.descriptionEs || plant.descriptionEn,
-      care: plant.careEs || plant.careEn,
-      light: normalizeLight(plant.lightEs || plant.lightEn),
-      water: normalizeWater(plant.waterEs || plant.waterEn),
-      humidity: normalizeHumidity(plant.humidityEs || plant.humidityEn),
-      imageUrl: plant.imageUrl,
-      category: plant.category,
-      price: this.formatPrice(plant.price ?? 0),
-      featured: plant.featured,
-    });
-  }
-
-  async downloadQr(plant: Plant): Promise<void> {
-    const url = `${window.location.origin}/p/${plant.slug}`;
-    const dataUrl = await QRCode.toDataURL(url, {
-      width: 512,
-      margin: 2,
-      color: { dark: '#1c1d19', light: '#f2eee4' },
-    });
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `qr-${plant.slug}.png`;
-    link.click();
-  }
-
-  savePlant(): void {
-    const token = this.auth.token();
-    if (!token) return;
-    const raw = this.plantForm.getRawValue();
-    const light = normalizeLight(raw.light);
-    const water = normalizeWater(raw.water);
-    const humidity = normalizeHumidity(raw.humidity);
-    const name = raw.name.trim();
-    const description = raw.description.trim();
-    const care = raw.care.trim();
-    const payload = {
-      id: raw.id || undefined,
-      slug: raw.slug,
-      nameEs: name,
-      nameEn: name,
-      scientificName: raw.scientificName,
-      descriptionEs: description,
-      descriptionEn: description,
-      careEs: care,
-      careEn: care,
-      lightEs: light,
-      lightEn: light,
-      waterEs: water,
-      waterEn: water,
-      humidityEs: humidity,
-      humidityEn: humidity,
-      imageUrl: raw.imageUrl,
-      category: raw.category,
-      price: this.parsePrice(raw.price) || null,
-      featured: raw.featured,
-    };
-    this.api.upsertPlant(token, payload).subscribe(() => {
-      this.plantForm.reset({
-        id: 0,
-        slug: '',
-        name: '',
-        scientificName: '',
-        description: '',
-        care: '',
-        light: 'partial',
-        water: 'moderate',
-        humidity: 'medium',
-        imageUrl: '',
-        category: 'interior',
-        price: this.formatPrice(0),
-        featured: false,
-      });
-      this.reload();
-    });
-  }
-
-  removePlant(id: number): void {
-    const token = this.auth.token();
-    if (!token) return;
-    this.api.deletePlant(token, id).subscribe(() => this.reload());
   }
 
   setStatus(id: number, status: Appointment['status']): void {

@@ -13,9 +13,9 @@
 
       <article class="stat stat--summary">
         <span class="stat__label">{{ t('admin.summary') }}</span>
-        <strong class="stat__value">{{ plants().length }} {{ t('admin.plants') }}</strong>
-        <span class="stat__detail">{{ pendingCount() }} {{ t('admin.pendingAppointments') }}</span>
+        <strong class="stat__value">{{ pendingCount() }} {{ t('admin.pendingAppointments') }}</strong>
         <span class="stat__detail">{{ posts().length }} {{ t('admin.posts') }}</span>
+        <span class="stat__detail">{{ galleryItems().length }} {{ t('admin.galleryTab') }}</span>
       </article>
 
       <article class="stat stat--info">
@@ -23,7 +23,7 @@
           <div class="info-row__location">
             <span class="stat__label">{{ t('admin.location') }}</span>
             <strong class="stat__value">{{ locationName }}</strong>
-            <span class="stat__detail">México</span>
+            <span class="stat__detail">Valle de la Hacienda</span>
           </div>
           <div class="info-row__clock" aria-live="polite">
             <span class="stat__label">{{ t('admin.clock') }}</span>
@@ -47,80 +47,12 @@
     </header>
 
     <div class="tabs">
-      <button type="button" [class.is-on]="tab() === 'plants'" (click)="setTab('plants')">{{ t('admin.plants') }}</button>
       <button type="button" [class.is-on]="tab() === 'appointments'" (click)="setTab('appointments')">{{ t('admin.appointments') }}</button>
       <button type="button" [class.is-on]="tab() === 'posts'" (click)="setTab('posts')">{{ t('admin.posts') }}</button>
-      <button type="button" [class.is-on]="tab() === 'password'" (click)="setTab('password')">{{ t('admin.passwordTab') }}</button>
-      <button type="button" [class.is-on]="tab() === 'design'" (click)="setTab('design')">{{ t('admin.designTab') }}</button>
       <button type="button" [class.is-on]="tab() === 'gallery'" (click)="setTab('gallery')">{{ t('admin.galleryTab') }}</button>
+      <button type="button" [class.is-on]="tab() === 'design'" (click)="setTab('design')">{{ t('admin.designTab') }}</button>
+      <button type="button" [class.is-on]="tab() === 'password'" (click)="setTab('password')">{{ t('admin.passwordTab') }}</button>
     </div>
-
-    @if (tab() === 'plants') {
-      <div class="panel">
-        <form class="form" [formGroup]="plantForm" (ngSubmit)="savePlant()">
-          <div class="form__grid">
-            <div class="field"><label>Identificador (slug)</label><input formControlName="slug" placeholder="ej. monstera-deliciosa" /></div>
-            <div class="field"><label>Nombre</label><input formControlName="name" /></div>
-            <div class="field"><label>Nombre científico</label><input formControlName="scientificName" /></div>
-            <div class="field"><label>URL de imagen</label><input formControlName="imageUrl" /></div>
-            <div class="field">
-              <label>Precio</label>
-              <input
-                type="text"
-                inputmode="numeric"
-                formControlName="price"
-                placeholder="$0"
-                (blur)="formatPriceField()"
-              />
-            </div>
-            <div class="field full"><label>Descripción</label><textarea formControlName="description" rows="2"></textarea></div>
-            <div class="field full"><label>Cuidados</label><textarea formControlName="care" rows="2"></textarea></div>
-            <div class="field">
-              <label>Luz</label>
-              <select formControlName="light">
-                @for (opt of lightOptions; track opt.value) {
-                  <option [value]="opt.value">{{ opt.labelEs }}</option>
-                }
-              </select>
-            </div>
-            <div class="field">
-              <label>Riego</label>
-              <select formControlName="water">
-                @for (opt of waterOptions; track opt.value) {
-                  <option [value]="opt.value">{{ opt.labelEs }}</option>
-                }
-              </select>
-            </div>
-            <div class="field">
-              <label>Humedad</label>
-              <select formControlName="humidity">
-                @for (opt of humidityOptions; track opt.value) {
-                  <option [value]="opt.value">{{ opt.labelEs }}</option>
-                }
-              </select>
-            </div>
-          </div>
-          <label class="check"><input type="checkbox" formControlName="featured" /> Destacada</label>
-          <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
-        </form>
-
-        <div class="table">
-          @for (plant of plants(); track plant.id) {
-            <div class="row">
-              <div>
-                <strong>{{ plant.nameEs }}</strong>
-                <span>/p/{{ plant.slug }}</span>
-              </div>
-              <div class="row__actions">
-                <button type="button" (click)="editPlant(plant)">{{ t('admin.edit') }}</button>
-                <button type="button" (click)="downloadQr(plant)">{{ t('admin.downloadQr') }}</button>
-                <button type="button" (click)="removePlant(plant.id)">{{ t('admin.delete') }}</button>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-    }
 
     @if (tab() === 'appointments') {
       <div class="panel table">

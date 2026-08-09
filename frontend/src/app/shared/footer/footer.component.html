@@ -1,15 +1,23 @@
 <footer class="footer">
+  <div class="footer__wave" aria-hidden="true"></div>
   <div class="footer__inner container">
     <div class="footer__brand">
       <a routerLink="/" class="logo">
-        <span class="logo__mark">ALA</span><span class="logo__text">PENCA</span>
+        <img class="logo__img" src="assets/brand/logo.png" alt="ALA-PENCA" width="56" height="56" />
+        <span class="logo__text-wrap">
+          <span class="logo__mark">ALA</span><span class="logo__name">PENCA</span>
+        </span>
       </a>
       <p>{{ t('footer.tagline') }}</p>
+      <a class="footer__ig" href="https://instagram.com/ALA_PENCA" target="_blank" rel="noopener noreferrer">
+        &#64;ALA_PENCA
+      </a>
     </div>
 
     <div class="footer__meta">
       <p>{{ t('footer.location') }}</p>
-      <p>{{ t('footer.contactPending') }}</p>
+      <a class="footer__phone" href="tel:+527713233873">{{ t('footer.phone') }}</a>
+      <p>{{ t('footer.hours') }}</p>
       <p class="footer__copy">© {{ year }} ALA-PENCA. {{ t('footer.rights') }}</p>
     </div>
   </div>

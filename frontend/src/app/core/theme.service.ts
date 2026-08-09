@@ -26,7 +26,7 @@ export class ThemeService {
       this.theme.set(merged);
       this.apply(merged);
     } catch {
-      const cached = localStorage.getItem('tj-theme');
+      const cached = localStorage.getItem('ala-theme');
       if (cached) {
         try {
           const parsed = this.mergeTheme(JSON.parse(cached) as ThemeConfig);
@@ -81,7 +81,7 @@ export class ThemeService {
         headers: { Authorization: `Bearer ${token}` },
       })
     );
-    localStorage.setItem('tj-theme', JSON.stringify(current));
+    localStorage.setItem('ala-theme', JSON.stringify(current));
   }
 
   async reset(token: string): Promise<void> {
@@ -93,7 +93,7 @@ export class ThemeService {
     const merged = this.mergeTheme(reset);
     this.theme.set(merged);
     this.apply(merged);
-    localStorage.setItem('tj-theme', JSON.stringify(merged));
+    localStorage.setItem('ala-theme', JSON.stringify(merged));
   }
 
   private apply(theme: ThemeConfig): void {
@@ -104,14 +104,14 @@ export class ThemeService {
     root.style.setProperty('--font-display', theme.fonts.display);
     root.style.setProperty('--font-body', theme.fonts.body);
     this.loadGoogleFont(theme.fonts.googleUrl);
-    localStorage.setItem('tj-theme', JSON.stringify(theme));
+    localStorage.setItem('ala-theme', JSON.stringify(theme));
   }
 
   private loadGoogleFont(url: string): void {
     if (!this.fontLinkEl) {
       this.fontLinkEl = document.createElement('link');
       this.fontLinkEl.rel = 'stylesheet';
-      this.fontLinkEl.id = 'tj-theme-fonts';
+      this.fontLinkEl.id = 'ala-theme-fonts';
       document.head.appendChild(this.fontLinkEl);
     }
     if (this.fontLinkEl.href !== url) {

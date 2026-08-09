@@ -1,27 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700&family=Oswald:wght@500;600;700&display=swap');
 
 :root {
-  /* Armonía sobre fondo oliva #84816b */
-  --green-950: #1e2218;
-  --green-900: #2a3024;
-  --green-800: #3d4633;
-  --green-700: #505b40;
-  --green-500: #b3bf86;
-  --green-300: #d5d9c0;
-  --green-100: #ece9df;
-  --orange-600: #b85f28;
-  --orange-500: #d4783a;
-  --orange-400: #e4a06a;
-  --black: #1c1d19;
-  --ink: #1c1d19;
-  --muted: #efebe0;
-  --muted-ink: #5a5b52;
-  --paper: #84816b;
-  --white: #f2eee4;
-  --line: rgba(28, 29, 25, 0.16);
+  /* ALA-PENCA — carbón, naranja vivo, crema, penca */
+  --green-950: #121314;
+  --green-900: #1a1b1d;
+  --green-800: #2a2c30;
+  --green-700: #3a3d42;
+  --green-500: #5fbf3a;
+  --green-300: #8fd96a;
+  --green-100: #d8f0c8;
+  --orange-600: #d4451a;
+  --orange-500: #f05a28;
+  --orange-400: #ff7a4d;
+  --black: #f4efe6;
+  --ink: #ebe4d8;
+  --muted: #b9b2a6;
+  --muted-ink: #6a6560;
+  --paper: #1f1f21;
+  --white: #2a2a2e;
+  --line: rgba(244, 239, 230, 0.14);
+  --cream: #f4efe6;
+  --charcoal: #1f1f21;
 
-  --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
 
   --radius: 4px;
   --space: clamp(1rem, 3vw, 2rem);
@@ -47,7 +49,10 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   color: var(--ink);
-  background: var(--paper);
+  background:
+    radial-gradient(ellipse 90% 55% at 15% -10%, rgba(240, 90, 40, 0.18), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 90% 10%, rgba(95, 191, 58, 0.08), transparent 50%),
+    var(--paper);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -73,9 +78,11 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  line-height: 1.15;
+  line-height: 1.1;
   font-weight: 600;
   margin: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 p {
@@ -94,9 +101,9 @@ p {
 
 .section__eyebrow {
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--orange-500);
   margin-bottom: 0.75rem;
 }
@@ -123,7 +130,7 @@ p {
   padding: 0.7rem 1.35rem;
   border: 1.5px solid transparent;
   border-radius: var(--radius);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
   transition: transform 0.25s var(--ease), background 0.25s var(--ease),
@@ -136,7 +143,7 @@ p {
 
 .btn--primary {
   background: var(--orange-500);
-  color: var(--white);
+  color: #fff;
 }
 
 .btn--primary:hover {
@@ -145,23 +152,24 @@ p {
 
 .btn--ghost {
   background: transparent;
-  border-color: rgba(255, 255, 255, 0.45);
-  color: var(--white);
+  border-color: rgba(244, 239, 230, 0.45);
+  color: var(--cream);
 }
 
 .btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(244, 239, 230, 0.1);
 }
 
 .btn--outline {
   background: transparent;
-  border-color: var(--black);
-  color: var(--black);
+  border-color: rgba(244, 239, 230, 0.35);
+  color: var(--cream);
 }
 
 .btn--outline:hover {
-  background: var(--black);
-  color: var(--white);
+  background: var(--orange-500);
+  border-color: var(--orange-500);
+  color: #fff;
 }
 
 .field {
@@ -189,7 +197,7 @@ p {
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-  outline: 2px solid var(--green-300);
+  outline: 2px solid var(--orange-500);
   outline-offset: 1px;
 }
 
@@ -221,6 +229,17 @@ p {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes brand-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

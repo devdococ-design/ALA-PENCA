@@ -1,18 +1,44 @@
 <section class="hero">
   <div class="hero__media" aria-hidden="true">
-    <img
-      src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?auto=format&fit=crop&w=1800&q=80"
-      alt=""
-    />
+    <img src="assets/brand/hero.jpg" alt="" />
     <div class="hero__veil"></div>
   </div>
 
   <div class="hero__content container">
-    <p class="hero__brand">{{ t('hero.brand') }}</p>
+    <img
+      class="hero__logo"
+      src="assets/brand/logo.png"
+      alt="ALA-PENCA"
+      width="220"
+      height="220"
+    />
     <h1>{{ t('hero.tagline') }}</h1>
+    <p class="hero__lead">{{ t('hero.lead') }}</p>
     <div class="hero__actions">
-      <a routerLink="/catalogo" class="btn btn--primary">{{ t('hero.ctaPrimary') }}</a>
-      <a routerLink="/hospital" class="btn btn--ghost">{{ t('hero.ctaSecondary') }}</a>
+      <a routerLink="/" fragment="menu" class="btn btn--primary">{{ t('hero.ctaPrimary') }}</a>
+      <a href="tel:+527713233873" class="btn btn--ghost">{{ t('hero.ctaSecondary') }}</a>
+    </div>
+  </div>
+</section>
+
+<section class="section menu" id="menu">
+  <div class="container">
+    <p class="section__eyebrow">{{ t('menu.eyebrow') }}</p>
+    <h2 class="section__title">{{ t('menu.title') }}</h2>
+    <p class="section__lead">{{ t('menu.lead') }}</p>
+
+    <div class="menu__grid">
+      @for (pkg of packages(); track pkg['name']) {
+        <article class="menu-card">
+          <div class="menu-card__top">
+            <h3>{{ pkg['name'] }}</h3>
+            <span class="menu-card__price">{{ pkg['price'] }}</span>
+          </div>
+          <p class="menu-card__options">{{ pkg['options'] }}</p>
+          <p class="menu-card__desc">{{ pkg['desc'] }}</p>
+          <p class="menu-card__serves">{{ pkg['serves'] }}</p>
+        </article>
+      }
     </div>
   </div>
 </section>
@@ -27,12 +53,12 @@
       <article>
         <h3>{{ t('services.saleTitle') }}</h3>
         <p>{{ t('services.saleText') }}</p>
-        <a routerLink="/catalogo" class="text-link">{{ t('hero.ctaPrimary') }} →</a>
+        <a routerLink="/" fragment="menu" class="text-link">{{ t('hero.ctaPrimary') }} →</a>
       </article>
       <article>
         <h3>{{ t('services.hospitalTitle') }}</h3>
         <p>{{ t('services.hospitalText') }}</p>
-        <a routerLink="/hospital" class="text-link">{{ t('services.cta') }} →</a>
+        <a href="tel:+527713233873" class="text-link">{{ t('services.cta') }} →</a>
       </article>
     </div>
   </div>
@@ -91,34 +117,12 @@
   </div>
 }
 
-<section class="section featured" id="catalogo-preview">
-  <div class="container">
-    <p class="section__eyebrow">{{ t('catalog.eyebrow') }}</p>
-    <div class="featured__head">
-      <h2 class="section__title">{{ t('catalog.title') }}</h2>
-      <a routerLink="/catalogo" class="btn btn--outline">{{ t('hero.ctaPrimary') }}</a>
-    </div>
-
-    <div class="plant-grid">
-      @for (plant of plants(); track plant.id) {
-        <a class="plant-card" [routerLink]="['/p', plant.slug]">
-          <img [src]="plant.imageUrl" [alt]="plantName(plant)" loading="lazy" />
-          <div>
-            <h3>{{ plantName(plant) }}</h3>
-            <p>{{ plant.scientificName }}</p>
-          </div>
-        </a>
-      }
-    </div>
-  </div>
-</section>
-
 <section class="section about" id="nosotros">
   <div class="about__layout container">
     <figure class="about__visual">
       <img
-        src="https://images.unsplash.com/photo-1466781783364-36c955e42a7f?auto=format&fit=crop&w=1200&q=80"
-        alt="About section placeholder image"
+        src="assets/brand/logo.png"
+        alt="Logo ALA-PENCA"
         loading="lazy"
       />
       <figcaption class="about__swatches" aria-hidden="true">
@@ -131,54 +135,6 @@
       <p class="section__eyebrow">{{ t('about.eyebrow') }}</p>
       <h2 class="section__title">{{ t('about.title') }}</h2>
       <p class="about__text">{{ t('about.text') }}</p>
-    </div>
-  </div>
-</section>
-
-<section class="section tips" id="tips">
-  <div class="container">
-    <p class="section__eyebrow">{{ t('blog.eyebrow') }}</p>
-    <div class="featured__head">
-      <div>
-        <h2 class="section__title">{{ t('blog.title') }}</h2>
-        <p class="section__lead">{{ t('blog.lead') }}</p>
-      </div>
-      <a routerLink="/tips" class="btn btn--outline">{{ t('blog.all') }}</a>
-    </div>
-
-    <div class="carousel">
-      <button
-        type="button"
-        class="carousel__btn carousel__btn--prev"
-        (click)="scrollCarousel(tipsTrack, -1)"
-        [attr.aria-label]="t('nav.prev')"
-      >
-        ‹
-      </button>
-
-      <div class="carousel__track" #tipsTrack>
-        @for (post of posts(); track post.id; let i = $index) {
-          <a
-            class="carousel__slide tip"
-            [style.animation-delay]="i * 0.08 + 's'"
-            [routerLink]="['/tips', post.slug]"
-          >
-            <img [src]="post.imageUrl" [alt]="postTitle(post)" loading="lazy" />
-            <h3>{{ postTitle(post) }}</h3>
-            <p>{{ postExcerpt(post) }}</p>
-            <span>{{ t('blog.readMore') }} →</span>
-          </a>
-        }
-      </div>
-
-      <button
-        type="button"
-        class="carousel__btn carousel__btn--next"
-        (click)="scrollCarousel(tipsTrack, 1)"
-        [attr.aria-label]="t('nav.next')"
-      >
-        ›
-      </button>
     </div>
   </div>
 </section>

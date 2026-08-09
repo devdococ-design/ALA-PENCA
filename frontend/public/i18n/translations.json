@@ -2,47 +2,76 @@
   "es": {
     "nav": {
       "home": "Inicio",
+      "menu": "Menú",
       "catalog": "Catálogo",
-      "hospital": "Citas",
+      "hospital": "Pedidos",
       "blog": "Tips",
       "about": "Nosotros",
-      "book": "Agendar cita",
-      "location": "México",
+      "book": "Hacer pedido",
+      "location": "Cuautitlán Izcalli",
       "prev": "Anterior",
       "next": "Siguiente"
     },
     "hero": {
       "brand": "ALA-PENCA",
-      "tagline": "Tu marca, tu espacio",
-      "lead": "Plantilla lista para personalizar: catálogo, citas, tips y panel de administración.",
-      "ctaPrimary": "Ver catálogo",
-      "ctaSecondary": "Agendar cita"
+      "tagline": "Pollos · Costillas · Chamorros",
+      "lead": "Pork & Chicken — sábados y domingos desde las 9:00 am, hasta agotar existencias.",
+      "ctaPrimary": "Ver menú",
+      "ctaSecondary": "Llamar ahora"
+    },
+    "menu": {
+      "eyebrow": "Menú",
+      "title": "Paquetes del día",
+      "lead": "Rellenos de nopales, cebolla, cilantro y salsa especial.",
+      "packages": [
+        {
+          "name": "Sencillo",
+          "price": "$190",
+          "options": "Pollo · Costilla · Combinado",
+          "desc": "Relleno de nopales. Preparado con cebolla, cilantro y salsa especial. El combinado es pollo y costilla sin cueritos.",
+          "serves": "Aprox. 4 personas"
+        },
+        {
+          "name": "Con cueritos",
+          "price": "$190",
+          "options": "Pollo · Costilla · Chamorro",
+          "desc": "Relleno de nopales y cueritos. Preparado con cebolla, cilantro y salsa especial.",
+          "serves": "Aprox. 4 personas"
+        },
+        {
+          "name": "Combinado grande",
+          "price": "$290",
+          "options": "Más pollo · Más costilla",
+          "desc": "Paquete grande con más pollo y más costilla. Relleno de nopales y cueritos, con cebolla, cilantro y salsa especial.",
+          "serves": "Aprox. 6 personas"
+        }
+      ]
     },
     "services": {
-      "eyebrow": "Servicios",
-      "title": "Qué incluye esta plantilla",
-      "lead": "Módulos listos para adaptar a tu negocio o proyecto.",
-      "saleTitle": "Catálogo",
-      "saleText": "Publica productos o ítems con ficha detallada y código QR opcional.",
-      "hospitalTitle": "Agenda de citas",
-      "hospitalText": "Recibe solicitudes de cita con fecha, hora y datos de contacto.",
-      "cta": "Agendar cita"
+      "eyebrow": "Cómo pedir",
+      "title": "Listo para el fin de semana",
+      "lead": "Elige tu paquete y contáctanos para apartar el tuyo.",
+      "saleTitle": "Menú del día",
+      "saleText": "Tres paquetes de pollo, costilla y chamorro — sencillos, con cueritos o el combinado grande.",
+      "hospitalTitle": "Pedidos y contacto",
+      "hospitalText": "Escríbenos o llama al 771 323 3873. Estamos en Valle de la Hacienda, Cuautitlán Izcalli.",
+      "cta": "Llamar"
     },
     "gallery": {
       "eyebrow": "Galería",
-      "title": "Imágenes de ejemplo",
-      "lead": "Reemplaza estas fotos por las de tu proyecto.",
+      "title": "El sabor en fotos",
+      "lead": "Momentos, platillos y el ambiente de ALA-PENCA.",
       "close": "Cerrar"
     },
     "about": {
       "eyebrow": "Sobre nosotros",
-      "title": "Sobre ALA-PENCA",
-      "text": "Este es un texto de marcador. Cuenta aquí la historia de tu marca, tu equipo y tu propuesta de valor."
+      "title": "ALA-PENCA",
+      "text": "Somos ALA-PENCA: pork & chicken con pollos, costillas y chamorros al estilo de fin de semana. Nos encuentras en Valle de la Hacienda, Cuautitlán Izcalli — sábados y domingos desde las 9:00 am, hasta agotar existencias."
     },
     "blog": {
       "eyebrow": "Tips",
-      "title": "Artículos de ejemplo",
-      "lead": "Publica guías, noticias o consejos desde el panel admin.",
+      "title": "Notas y tips",
+      "lead": "Consejos y novedades desde la cocina.",
       "readMore": "Leer más",
       "all": "Ver todos"
     },
@@ -51,34 +80,34 @@
       "title": "Preguntas frecuentes",
       "items": [
         {
-          "q": "¿Puedo cambiar textos e imágenes?",
-          "a": "Sí. Edita las traducciones, el seed y el contenido desde /admin."
+          "q": "¿Qué días atienden?",
+          "a": "Sábados y domingos a partir de las 9:00 am y hasta agotar existencias."
         },
         {
-          "q": "¿Cómo funciona la agenda de citas?",
-          "a": "El visitante envía una solicitud; tú la gestionas en el panel de administración."
+          "q": "¿Dónde están?",
+          "a": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx."
         },
         {
-          "q": "¿Dónde operan?",
-          "a": "Marcador: México. Actualiza la ubicación cuando definas tu cobertura."
+          "q": "¿Cómo hago un pedido?",
+          "a": "Llámanos al 771 323 3873 o síguenos en Instagram @ALA_PENCA."
         },
         {
-          "q": "¿Esto es contenido definitivo?",
-          "a": "No: son textos de plantilla. Sustitúyelos por tu copy real."
+          "q": "¿Para cuántas personas son los paquetes?",
+          "a": "Los paquetes de $190 rinden aprox. 4 personas; el combinado grande ($290) aprox. 6."
         }
       ]
     },
     "catalog": {
       "eyebrow": "Catálogo",
-      "title": "Ítems de ejemplo",
-      "lead": "Explora fichas de muestra — la misma vista que puede abrir un código QR.",
-      "care": "Cuidados",
-      "light": "Luz",
-      "water": "Riego",
-      "humidity": "Humedad",
-      "filterLight": "Filtrar por luz",
+      "title": "Nuestros productos",
+      "lead": "Explora opciones y fichas detalladas.",
+      "care": "Detalle",
+      "light": "Tipo",
+      "water": "Preparación",
+      "humidity": "Porción",
+      "filterLight": "Filtrar",
       "filterAll": "Todas",
-      "emptyFilter": "No hay ítems con ese tipo de luz.",
+      "emptyFilter": "No hay productos con ese filtro.",
       "lightOptions": {
         "shade": "Sombra",
         "partial": "Semisombra",
@@ -114,40 +143,42 @@
       "items": "Artículos",
       "total": "Total",
       "clear": "Vaciar carrito",
-      "note": "El pago y la entrega se confirman por contacto. Pronto podrás completar el pedido desde aquí."
+      "note": "Confirma tu pedido por teléfono: 771 323 3873."
     },
     "hospital": {
-      "eyebrow": "Citas",
-      "title": "Agenda una cita",
-      "lead": "Completa el formulario y elige un horario preferido.",
+      "eyebrow": "Pedidos",
+      "title": "Aparta tu pedido",
+      "lead": "Déjanos tus datos y el paquete que quieres. Te confirmamos por teléfono.",
       "name": "Nombre",
       "email": "Correo",
       "phone": "Teléfono",
-      "issue": "¿En qué podemos ayudarte?",
-      "schedule": "Horario de atención",
+      "issue": "¿Qué paquete quieres? (sencillo, con cueritos o combinado grande)",
+      "schedule": "Horario",
       "date": "Fecha",
       "time": "Hora",
       "timePlaceholder": "Selecciona un horario",
-      "regularHours": "Lunes a viernes, 10:00 a 17:00 (intervalos de 20 min).",
-      "emergencyHours": "Urgente: también sábado y domingo, 11:00 a 14:00.",
+      "regularHours": "Sábados y domingos, a partir de las 9:00 am (hasta agotar existencias).",
+      "emergencyHours": "Para pedidos urgentes el mismo día, indícalo en el mensaje.",
       "emergency": "Urgente",
-      "weekdayOnly": "Solo lunes a viernes. Activa Urgente para sábado o domingo.",
+      "weekdayOnly": "Atendemos sábados y domingos. Elige un fin de semana.",
       "pastDate": "Elige una fecha de hoy en adelante.",
       "invalidDate": "Fecha no válida.",
       "required": "Este campo es obligatorio.",
       "emailInvalid": "Ingresa un correo válido.",
       "phoneInvalid": "Ingresa un teléfono de al menos 7 dígitos.",
-      "issueInvalid": "Describe el motivo con al menos 5 caracteres.",
-      "submit": "Agendar",
-      "success": "Cita guardada correctamente.",
-      "toastOk": "Cita guardada correctamente",
-      "error": "No pudimos enviar la solicitud. Intenta de nuevo."
+      "issueInvalid": "Describe el pedido con al menos 5 caracteres.",
+      "submit": "Enviar pedido",
+      "success": "Pedido recibido. Te contactamos pronto.",
+      "toastOk": "Pedido recibido correctamente",
+      "error": "No pudimos enviar la solicitud. Intenta de nuevo o llama al 771 323 3873."
     },
     "footer": {
-      "tagline": "Plantilla lista para personalizar",
-      "location": "México",
+      "tagline": "Pork & Chicken — pollos, costillas y chamorros",
+      "location": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx.",
+      "phone": "771 323 3873",
+      "hours": "Sábados y domingos desde las 9:00 am",
       "rights": "Todos los derechos reservados.",
-      "contactPending": "Contacto próximamente"
+      "contactPending": "771 323 3873 · @ALA_PENCA"
     },
     "admin": {
       "login": "Acceso admin",
@@ -156,7 +187,7 @@
       "enter": "Entrar",
       "dashboard": "Panel",
       "plants": "Catálogo",
-      "appointments": "Citas",
+      "appointments": "Pedidos",
       "posts": "Tips",
       "logout": "Salir",
       "save": "Guardar",
@@ -183,7 +214,7 @@
       "wind": "Viento",
       "weatherUnavailable": "Clima no disponible",
       "summary": "Resumen",
-      "pendingAppointments": "citas pendientes",
+      "pendingAppointments": "pedidos pendientes",
       "viewSite": "Ver sitio",
       "location": "Ubicación",
       "designTab": "Diseño",
@@ -215,47 +246,76 @@
   "en": {
     "nav": {
       "home": "Home",
+      "menu": "Menu",
       "catalog": "Catalog",
-      "hospital": "Bookings",
+      "hospital": "Orders",
       "blog": "Tips",
       "about": "About",
-      "book": "Book a visit",
-      "location": "Mexico",
+      "book": "Place order",
+      "location": "Cuautitlán Izcalli",
       "prev": "Previous",
       "next": "Next"
     },
     "hero": {
       "brand": "ALA-PENCA",
-      "tagline": "Your brand, your space",
-      "lead": "A ready-to-customize starter: catalog, bookings, tips, and an admin panel.",
-      "ctaPrimary": "Browse catalog",
-      "ctaSecondary": "Book a visit"
+      "tagline": "Chicken · Ribs · Pork shank",
+      "lead": "Pork & Chicken — Saturdays and Sundays from 9:00 am, while supplies last.",
+      "ctaPrimary": "See menu",
+      "ctaSecondary": "Call now"
+    },
+    "menu": {
+      "eyebrow": "Menu",
+      "title": "Day packages",
+      "lead": "Stuffed with nopales, onion, cilantro, and our special sauce.",
+      "packages": [
+        {
+          "name": "Simple",
+          "price": "$190",
+          "options": "Chicken · Ribs · Combo",
+          "desc": "Stuffed with nopales. Prepared with onion, cilantro, and special sauce. The combo is chicken and ribs without pork skins.",
+          "serves": "Approx. 4 people"
+        },
+        {
+          "name": "With pork skins",
+          "price": "$190",
+          "options": "Chicken · Ribs · Pork shank",
+          "desc": "Stuffed with nopales and pork skins. Prepared with onion, cilantro, and special sauce.",
+          "serves": "Approx. 4 people"
+        },
+        {
+          "name": "Large combo",
+          "price": "$290",
+          "options": "More chicken · More ribs",
+          "desc": "A large package with more chicken and more ribs. Stuffed with nopales and pork skins, with onion, cilantro, and special sauce.",
+          "serves": "Approx. 6 people"
+        }
+      ]
     },
     "services": {
-      "eyebrow": "Services",
-      "title": "What’s in this template",
-      "lead": "Modules ready to adapt to your business or project.",
-      "saleTitle": "Catalog",
-      "saleText": "Publish products or items with a detail page and optional QR code.",
-      "hospitalTitle": "Appointment booking",
-      "hospitalText": "Collect booking requests with date, time, and contact details.",
-      "cta": "Book a visit"
+      "eyebrow": "How to order",
+      "title": "Ready for the weekend",
+      "lead": "Pick your package and reach out to reserve yours.",
+      "saleTitle": "Day menu",
+      "saleText": "Three packages of chicken, ribs, and pork shank — simple, with skins, or the large combo.",
+      "hospitalTitle": "Orders & contact",
+      "hospitalText": "Message us or call 771 323 3873. We’re in Valle de la Hacienda, Cuautitlán Izcalli.",
+      "cta": "Call"
     },
     "gallery": {
       "eyebrow": "Gallery",
-      "title": "Sample images",
-      "lead": "Replace these photos with your own project visuals.",
+      "title": "Flavor in photos",
+      "lead": "Moments, plates, and the ALA-PENCA vibe.",
       "close": "Close"
     },
     "about": {
       "eyebrow": "About us",
-      "title": "About ALA-PENCA",
-      "text": "This is placeholder copy. Tell your brand story, introduce your team, and describe your value proposition here."
+      "title": "ALA-PENCA",
+      "text": "We’re ALA-PENCA: pork & chicken with weekend-style chicken, ribs, and pork shank. Find us in Valle de la Hacienda, Cuautitlán Izcalli — Saturdays and Sundays from 9:00 am, while supplies last."
     },
     "blog": {
       "eyebrow": "Tips",
-      "title": "Sample articles",
-      "lead": "Publish guides, news, or advice from the admin panel.",
+      "title": "Notes & tips",
+      "lead": "Kitchen notes and news.",
       "readMore": "Read more",
       "all": "See all"
     },
@@ -264,34 +324,34 @@
       "title": "Frequently asked questions",
       "items": [
         {
-          "q": "Can I change texts and images?",
-          "a": "Yes. Edit translations, the seed data, and content from /admin."
+          "q": "What days are you open?",
+          "a": "Saturdays and Sundays from 9:00 am until supplies last."
         },
         {
-          "q": "How do bookings work?",
-          "a": "Visitors submit a request; you manage it in the admin panel."
+          "q": "Where are you located?",
+          "a": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx."
         },
         {
-          "q": "Where do you operate?",
-          "a": "Placeholder: Mexico. Update the location when you define your coverage."
+          "q": "How do I order?",
+          "a": "Call 771 323 3873 or follow us on Instagram @ALA_PENCA."
         },
         {
-          "q": "Is this final content?",
-          "a": "No — these are template strings. Replace them with your real copy."
+          "q": "How many people do packages serve?",
+          "a": "The $190 packages serve about 4 people; the large combo ($290) about 6."
         }
       ]
     },
     "catalog": {
       "eyebrow": "Catalog",
-      "title": "Sample items",
-      "lead": "Browse sample detail pages — the same view a QR code can open.",
-      "care": "Care",
-      "light": "Light",
-      "water": "Water",
-      "humidity": "Humidity",
-      "filterLight": "Filter by light",
+      "title": "Our products",
+      "lead": "Browse options and detail pages.",
+      "care": "Detail",
+      "light": "Type",
+      "water": "Prep",
+      "humidity": "Portion",
+      "filterLight": "Filter",
       "filterAll": "All",
-      "emptyFilter": "No items match that light type.",
+      "emptyFilter": "No products match that filter.",
       "lightOptions": {
         "shade": "Shade",
         "partial": "Partial shade",
@@ -327,40 +387,42 @@
       "items": "Items",
       "total": "Total",
       "clear": "Clear cart",
-      "note": "Payment and delivery are confirmed by contact. Soon you’ll be able to complete the order here."
+      "note": "Confirm your order by phone: 771 323 3873."
     },
     "hospital": {
-      "eyebrow": "Bookings",
-      "title": "Book a visit",
-      "lead": "Fill in the form and pick a preferred time.",
+      "eyebrow": "Orders",
+      "title": "Reserve your order",
+      "lead": "Leave your details and the package you want. We’ll confirm by phone.",
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
-      "issue": "How can we help?",
-      "schedule": "Opening hours",
+      "issue": "Which package? (simple, with skins, or large combo)",
+      "schedule": "Hours",
       "date": "Date",
       "time": "Time",
       "timePlaceholder": "Select a time slot",
-      "regularHours": "Monday to Friday, 10:00 to 17:00 (20-minute intervals).",
-      "emergencyHours": "Urgent: weekends also available, 11:00 to 14:00.",
+      "regularHours": "Saturdays and Sundays from 9:00 am (while supplies last).",
+      "emergencyHours": "For same-day urgent orders, note it in your message.",
       "emergency": "Urgent",
-      "weekdayOnly": "Weekdays only. Turn on Urgent for Saturday or Sunday.",
+      "weekdayOnly": "We’re open Saturdays and Sundays. Pick a weekend date.",
       "pastDate": "Choose today or a future date.",
       "invalidDate": "Invalid date.",
       "required": "This field is required.",
       "emailInvalid": "Enter a valid email.",
       "phoneInvalid": "Enter a phone number with at least 7 digits.",
-      "issueInvalid": "Describe the request with at least 5 characters.",
-      "submit": "Book",
-      "success": "Appointment saved successfully.",
-      "toastOk": "Appointment saved successfully",
-      "error": "We couldn’t send the request. Please try again."
+      "issueInvalid": "Describe the order with at least 5 characters.",
+      "submit": "Submit order",
+      "success": "Order received. We’ll contact you soon.",
+      "toastOk": "Order received successfully",
+      "error": "We couldn’t send the request. Try again or call 771 323 3873."
     },
     "footer": {
-      "tagline": "A starter ready to customize",
-      "location": "Mexico",
+      "tagline": "Pork & Chicken — chicken, ribs, and pork shank",
+      "location": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx.",
+      "phone": "771 323 3873",
+      "hours": "Saturdays & Sundays from 9:00 am",
       "rights": "All rights reserved.",
-      "contactPending": "Contact coming soon"
+      "contactPending": "771 323 3873 · @ALA_PENCA"
     },
     "admin": {
       "login": "Admin access",
@@ -369,7 +431,7 @@
       "enter": "Sign in",
       "dashboard": "Dashboard",
       "plants": "Catalog",
-      "appointments": "Appointments",
+      "appointments": "Orders",
       "posts": "Tips",
       "logout": "Log out",
       "save": "Save",
@@ -396,7 +458,7 @@
       "wind": "Wind",
       "weatherUnavailable": "Weather unavailable",
       "summary": "Overview",
-      "pendingAppointments": "pending appointments",
+      "pendingAppointments": "pending orders",
       "viewSite": "View site",
       "location": "Location",
       "designTab": "Design",
