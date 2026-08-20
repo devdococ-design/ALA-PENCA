@@ -90,50 +90,6 @@ export class ApiService {
     );
   }
 
-  adminPosts(token: string): Observable<BlogPost[]> {
-    return this.http.get<BlogPost[]>(`${this.base}/admin/posts`, {
-      headers: this.auth(token),
-    });
-  }
-
-  upsertPost(token: string, post: Partial<BlogPost> & { id?: number }): Observable<BlogPost> {
-    if (post.id) {
-      return this.http.patch<BlogPost>(`${this.base}/admin/posts/${post.id}`, post, {
-        headers: this.auth(token),
-      });
-    }
-    return this.http.post<BlogPost>(`${this.base}/admin/posts`, post, {
-      headers: this.auth(token),
-    });
-  }
-
-  deletePost(token: string, id: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/admin/posts/${id}`, {
-      headers: this.auth(token),
-    });
-  }
-
-  getTheme(): Observable<import('./theme.model').ThemeConfig> {
-    return this.http.get<import('./theme.model').ThemeConfig>(`${this.base}/theme`);
-  }
-
-  saveTheme(
-    token: string,
-    theme: import('./theme.model').ThemeConfig
-  ): Observable<import('./theme.model').ThemeConfig> {
-    return this.http.put<import('./theme.model').ThemeConfig>(`${this.base}/admin/theme`, theme, {
-      headers: this.auth(token),
-    });
-  }
-
-  resetTheme(token: string): Observable<import('./theme.model').ThemeConfig> {
-    return this.http.put<import('./theme.model').ThemeConfig>(
-      `${this.base}/admin/theme/reset`,
-      {},
-      { headers: this.auth(token) }
-    );
-  }
-
   getGallery(): Observable<GalleryItem[]> {
     return this.http.get<GalleryItem[]>(`${this.base}/gallery`);
   }

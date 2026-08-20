@@ -14,7 +14,6 @@
       <article class="stat stat--summary">
         <span class="stat__label">{{ t('admin.summary') }}</span>
         <strong class="stat__value">{{ pendingCount() }} {{ t('admin.pendingAppointments') }}</strong>
-        <span class="stat__detail">{{ posts().length }} {{ t('admin.posts') }}</span>
         <span class="stat__detail">{{ galleryItems().length }} {{ t('admin.galleryTab') }}</span>
       </article>
 
@@ -48,9 +47,7 @@
 
     <div class="tabs">
       <button type="button" [class.is-on]="tab() === 'appointments'" (click)="setTab('appointments')">{{ t('admin.appointments') }}</button>
-      <button type="button" [class.is-on]="tab() === 'posts'" (click)="setTab('posts')">{{ t('admin.posts') }}</button>
       <button type="button" [class.is-on]="tab() === 'gallery'" (click)="setTab('gallery')">{{ t('admin.galleryTab') }}</button>
-      <button type="button" [class.is-on]="tab() === 'design'" (click)="setTab('design')">{{ t('admin.designTab') }}</button>
       <button type="button" [class.is-on]="tab() === 'password'" (click)="setTab('password')">{{ t('admin.passwordTab') }}</button>
     </div>
 
@@ -61,7 +58,10 @@
             <div>
               <strong>{{ item.customerName }}</strong>
               <p>{{ item.plantIssue }}</p>
-              <span>{{ item.preferredDate }} · {{ item.status }}</span>
+              @if (item.notes) {
+                <p class="row__notes">{{ item.notes }}</p>
+              }
+              <span>{{ item.preferredDate }} · {{ item.phone }} · {{ item.status }}</span>
             </div>
             <div class="row__actions">
               <button type="button" (click)="setStatus(item.id, 'CONFIRMED')">Confirmar</button>
@@ -70,37 +70,6 @@
             </div>
           </div>
         }
-      </div>
-    }
-
-    @if (tab() === 'posts') {
-      <div class="panel">
-        <form class="form" [formGroup]="postForm" (ngSubmit)="savePost()">
-          <div class="form__grid">
-            <div class="field"><label>Identificador (slug)</label><input formControlName="slug" /></div>
-            <div class="field"><label>Título</label><input formControlName="title" /></div>
-            <div class="field"><label>URL de imagen</label><input formControlName="imageUrl" /></div>
-            <div class="field full"><label>Resumen</label><textarea formControlName="excerpt" rows="2"></textarea></div>
-            <div class="field full"><label>Contenido</label><textarea formControlName="content" rows="4"></textarea></div>
-          </div>
-          <label class="check"><input type="checkbox" formControlName="published" /> Publicado</label>
-          <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
-        </form>
-
-        <div class="table">
-          @for (post of posts(); track post.id) {
-            <div class="row">
-              <div>
-                <strong>{{ post.titleEs }}</strong>
-                <span>/tips/{{ post.slug }}</span>
-              </div>
-              <div class="row__actions">
-                <button type="button" (click)="editPost(post)">{{ t('admin.edit') }}</button>
-                <button type="button" (click)="removePost(post.id)">{{ t('admin.delete') }}</button>
-              </div>
-            </div>
-          }
-        </div>
       </div>
     }
 
@@ -131,70 +100,11 @@
       </div>
     }
 
-    @if (tab() === 'design') {
-      <div class="panel design">
-        <section class="form design__block">
-          <h2>{{ t('admin.designColors') }}</h2>
-          <p class="design__lead">{{ t('admin.designColorsLead') }}</p>
-          <div class="design__colors">
-            @for (field of colorFields; track field.key) {
-              <label class="swatch-field">
-                <span>{{ colorLabel(field) }}</span>
-                <div class="swatch-field__controls">
-                  <input
-                    type="color"
-                    [value]="colorValue(field.key)"
-                    (input)="onColorInput(field.key, $event)"
-                  />
-                  <input
-                    type="text"
-                    [value]="colorValue(field.key)"
-                    (change)="onColorText(field.key, $event)"
-                    maxlength="7"
-                  />
-                </div>
-              </label>
-            }
-          </div>
-        </section>
-
-        <section class="form design__block">
-          <h2>{{ t('admin.designFonts') }}</h2>
-          <p class="design__lead">{{ t('admin.designFontsLead') }}</p>
-          <div class="font-pairs">
-            @for (pair of themeService.fontPairs; track pair.id) {
-              <button
-                type="button"
-                class="font-pair"
-                [class.is-on]="themeService.activeFontPairId() === pair.id"
-                (click)="selectFont(pair.id)"
-              >
-                <span class="font-pair__name">{{ pair.label }}</span>
-                <span class="font-pair__preview" [style.fontFamily]="pair.display">ALA-PENCA</span>
-                <span class="font-pair__body" [style.fontFamily]="pair.body">{{ t('admin.fontPreview') }}</span>
-              </button>
-            }
-          </div>
-        </section>
-
-        <div class="design__actions">
-          <button class="btn btn--primary" type="button" (click)="saveDesign()">{{ t('admin.saveDesign') }}</button>
-          <button class="btn btn--outline" type="button" (click)="resetDesign()">{{ t('admin.resetDesign') }}</button>
-        </div>
-        @if (designStatus() === 'ok' || designStatus() === 'reset') {
-          <p class="msg msg--ok">{{ designMessage() }}</p>
-        }
-        @if (designStatus() === 'error') {
-          <p class="msg msg--err">{{ designMessage() }}</p>
-        }
-      </div>
-    }
-
     @if (tab() === 'gallery') {
       <div class="panel">
         <form class="form" [formGroup]="galleryForm" (ngSubmit)="saveGalleryItem()">
           <h2 class="password-form__title">{{ t('admin.galleryTab') }}</h2>
-          <p class="design__lead">{{ t('admin.galleryLead') }}</p>
+          <p class="panel__lead">{{ t('admin.galleryLead') }}</p>
 
           <div class="gallery-upload">
             <div class="field">
@@ -217,7 +127,7 @@
             </div>
           </div>
 
-          <div class="design__actions">
+          <div class="panel__actions">
             <button class="btn btn--primary" type="submit">{{ t('admin.save') }}</button>
             <button class="btn btn--outline" type="button" (click)="resetGalleryForm()">{{ t('admin.galleryNew') }}</button>
           </div>
@@ -244,7 +154,7 @@
               </div>
             </div>
           } @empty {
-            <p class="design__lead">{{ t('admin.galleryEmpty') }}</p>
+            <p class="panel__lead">{{ t('admin.galleryEmpty') }}</p>
           }
         </div>
       </div>

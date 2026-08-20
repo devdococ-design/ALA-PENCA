@@ -4,9 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { I18nService } from '../../core/i18n.service';
-import { ThemeService } from '../../core/theme.service';
-import { COLOR_FIELDS, type ThemeColors } from '../../core/theme.model';
-import type { Appointment, BlogPost, GalleryItem } from '../../core/models';
+import type { Appointment, GalleryItem } from '../../core/models';
 
 interface WeatherInfo {
   temp: number;
@@ -27,23 +25,18 @@ interface WeatherInfo {
 export class AdminComponent implements OnInit, OnDestroy {
   readonly i18n = inject(I18nService);
   readonly auth = inject(AuthService);
-  readonly themeService = inject(ThemeService);
   private readonly api = inject(ApiService);
   private readonly http = inject(HttpClient);
   private readonly fb = inject(FormBuilder);
 
   readonly adminName = 'Admin';
   readonly locationName = 'Cuautitlán Izcalli';
-  readonly colorFields = COLOR_FIELDS;
 
-  readonly tab = signal<'appointments' | 'posts' | 'password' | 'design' | 'gallery'>('appointments');
+  readonly tab = signal<'appointments' | 'password' | 'gallery'>('appointments');
   readonly appointments = signal<Appointment[]>([]);
-  readonly posts = signal<BlogPost[]>([]);
   readonly galleryItems = signal<GalleryItem[]>([]);
   readonly passwordStatus = signal<'idle' | 'ok' | 'error'>('idle');
   readonly passwordError = signal('');
-  readonly designStatus = signal<'idle' | 'ok' | 'reset' | 'error'>('idle');
-  readonly designMessage = signal('');
   readonly galleryFile = signal<File | null>(null);
   readonly galleryPreview = signal('');
   readonly galleryStatus = signal<'idle' | 'ok' | 'error'>('idle');
@@ -56,16 +49,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   readonly weatherError = signal(false);
 
   private clockId: ReturnType<typeof setInterval> | null = null;
-
-  readonly postForm = this.fb.nonNullable.group({
-    id: [0],
-    slug: [''],
-    title: [''],
-    excerpt: [''],
-    content: [''],
-    imageUrl: [''],
-    published: [true],
-  });
 
   readonly passwordForm = this.fb.nonNullable.group({
     currentPassword: [''],
@@ -120,12 +103,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     return this.weatherLabel(code);
   }
 
-  setTab(tab: 'appointments' | 'posts' | 'password' | 'design' | 'gallery'): void {
+  setTab(tab: 'appointments' | 'password' | 'gallery'): void {
     this.tab.set(tab);
     this.passwordStatus.set('idle');
     this.passwordError.set('');
-    this.designStatus.set('idle');
-    this.designMessage.set('');
     this.galleryStatus.set('idle');
     this.galleryMessage.set('');
   }
@@ -221,61 +202,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  colorLabel(field: (typeof COLOR_FIELDS)[number]): string {
-    return this.i18n.lang() === 'en' ? field.labelEn : field.labelEs;
-  }
-
-  colorValue(key: keyof ThemeColors): string {
-    return this.themeService.theme().colors[key];
-  }
-
-  onColorInput(key: keyof ThemeColors, event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.themeService.setColor(key, value);
-  }
-
-  onColorText(key: keyof ThemeColors, event: Event): void {
-    const value = (event.target as HTMLInputElement).value.trim();
-    if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value)) {
-      this.themeService.setColor(key, value);
-    }
-  }
-
-  selectFont(pairId: string): void {
-    this.themeService.setFontPair(pairId);
-  }
-
-  async saveDesign(): Promise<void> {
-    const token = this.auth.token();
-    if (!token) return;
-    try {
-      await this.themeService.save(token);
-      this.designStatus.set('ok');
-      this.designMessage.set(this.t('admin.designSaved'));
-    } catch {
-      this.designStatus.set('error');
-      this.designMessage.set(this.t('admin.designFail'));
-    }
-  }
-
-  async resetDesign(): Promise<void> {
-    const token = this.auth.token();
-    if (!token) return;
-    try {
-      await this.themeService.reset(token);
-      this.designStatus.set('reset');
-      this.designMessage.set(this.t('admin.designReset'));
-    } catch {
-      this.designStatus.set('error');
-      this.designMessage.set(this.t('admin.designFail'));
-    }
-  }
-
   reload(): void {
     const token = this.auth.token();
     if (!token) return;
     this.api.adminAppointments(token).subscribe((items) => this.appointments.set(items));
-    this.api.adminPosts(token).subscribe((posts) => this.posts.set(posts));
     this.api.adminGallery(token).subscribe((items) => this.galleryItems.set(items));
   }
 
@@ -283,57 +213,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     const token = this.auth.token();
     if (!token) return;
     this.api.updateAppointmentStatus(token, id, status).subscribe(() => this.reload());
-  }
-
-  editPost(post: BlogPost): void {
-    this.postForm.patchValue({
-      id: post.id,
-      slug: post.slug,
-      title: post.titleEs || post.titleEn,
-      excerpt: post.excerptEs || post.excerptEn,
-      content: post.contentEs || post.contentEn,
-      imageUrl: post.imageUrl,
-      published: post.published,
-    });
-  }
-
-  savePost(): void {
-    const token = this.auth.token();
-    if (!token) return;
-    const raw = this.postForm.getRawValue();
-    const title = raw.title.trim();
-    const excerpt = raw.excerpt.trim();
-    const content = raw.content.trim();
-    const payload = {
-      id: raw.id || undefined,
-      slug: raw.slug,
-      titleEs: title,
-      titleEn: title,
-      excerptEs: excerpt,
-      excerptEn: excerpt,
-      contentEs: content,
-      contentEn: content,
-      imageUrl: raw.imageUrl,
-      published: raw.published,
-    };
-    this.api.upsertPost(token, payload).subscribe(() => {
-      this.postForm.reset({
-        id: 0,
-        slug: '',
-        title: '',
-        excerpt: '',
-        content: '',
-        imageUrl: '',
-        published: true,
-      });
-      this.reload();
-    });
-  }
-
-  removePost(id: number): void {
-    const token = this.auth.token();
-    if (!token) return;
-    this.api.deletePost(token, id).subscribe(() => this.reload());
   }
 
   changePassword(): void {
@@ -402,7 +281,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     const m = date.getMonth() + 1;
     const d = date.getDate();
     const en = this.i18n.lang() === 'en';
-    // Hemisferio norte / México
     if ((m === 3 && d >= 21) || m === 4 || m === 5 || (m === 6 && d < 21)) {
       return en ? 'Spring' : 'Primavera';
     }

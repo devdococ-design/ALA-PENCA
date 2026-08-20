@@ -1,13 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class AppointmentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly logger = new Logger(AppointmentsService.name);
 
-  create(dto: CreateAppointmentDto) {
-    return this.prisma.appointment.create({ data: dto });
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly notifications: NotificationsService,
+  ) {}
+
+  async create(dto: CreateAppointmentDto) {
+    const appointment = await this.prisma.appointment.create({ data: dto });
+
+    void this.notifications.notifyNewOrder(appointment).catch((error) => {
+      this.logger.error(`Order notification failed for #${appointment.id}`, error);
+    });
+
+    return appointment;
   }
 
   findAll() {

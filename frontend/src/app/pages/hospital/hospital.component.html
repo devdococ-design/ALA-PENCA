@@ -22,6 +22,23 @@
       </div>
 
       <div class="field">
+        <label for="phone">{{ t('hospital.phone') }} *</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          autocomplete="tel"
+          inputmode="tel"
+          required
+        />
+        @if (invalid('phone')) {
+          <p class="field-error">
+            {{ form.controls.phone.hasError('required') ? t('hospital.required') : t('hospital.phoneInvalid') }}
+          </p>
+        }
+      </div>
+
+      <div class="field">
         <label for="email">{{ t('hospital.email') }}</label>
         <input id="email" type="email" formControlName="email" autocomplete="email" />
         @if (invalid('email')) {
@@ -29,44 +46,68 @@
         }
       </div>
 
-      <div class="field">
-        <label for="phone">{{ t('hospital.phone') }}</label>
-        <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
-        @if (invalid('phone')) {
-          <p class="field-error">{{ t('hospital.phoneInvalid') }}</p>
+      <div class="packages">
+        <p class="schedule__label">{{ t('hospital.packages') }}</p>
+        <p class="schedule__hint">{{ t('hospital.packagesHint') }}</p>
+
+        @for (group of packages(); track group.id) {
+          <fieldset class="pkg-group">
+            <legend>{{ t('hospital.groups.' + group.id) }}</legend>
+            <ul class="pkg-list">
+              @for (item of group.items; track item.id) {
+                <li class="pkg-item" [class.is-on]="item.selected">
+                  <label class="pkg-check">
+                    <input
+                      type="checkbox"
+                      [checked]="item.selected"
+                      (change)="toggleItem(group.id, item.id, $event)"
+                    />
+                    <span>{{ t('hospital.items.' + item.id) }}</span>
+                  </label>
+                  <div class="qty">
+                    <button
+                      type="button"
+                      class="qty__btn"
+                      (click)="changeQty(group.id, item.id, -1)"
+                      [disabled]="item.qty <= 0"
+                      [attr.aria-label]="t('hospital.qtyDecrease')"
+                    >
+                      −
+                    </button>
+                    <span class="qty__value">{{ item.qty }}</span>
+                    <button
+                      type="button"
+                      class="qty__btn"
+                      (click)="changeQty(group.id, item.id, 1)"
+                      [attr.aria-label]="t('hospital.qtyIncrease')"
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
+              }
+            </ul>
+          </fieldset>
+        }
+
+        @if (packagesError()) {
+          <p class="field-error">{{ packagesError() }}</p>
         }
       </div>
 
-      <div class="field">
-        <label for="issue">{{ t('hospital.issue') }}</label>
-        <textarea id="issue" rows="4" formControlName="plantIssue"></textarea>
-        @if (invalid('plantIssue')) {
-          <p class="field-error">{{ t('hospital.issueInvalid') }}</p>
-        }
+      <div class="field notes">
+        <p class="schedule__label">{{ t('hospital.notes') }}</p>
+        <p class="schedule__hint">{{ t('hospital.notesHint') }}</p>
+        <textarea
+          id="notes"
+          formControlName="notes"
+          rows="4"
+          [attr.aria-label]="t('hospital.notes')"
+          [attr.placeholder]="t('hospital.notesPlaceholder')"
+        ></textarea>
       </div>
 
       <div class="schedule">
-        <div class="schedule__head">
-          <div>
-            <p class="schedule__label">{{ t('hospital.schedule') }}</p>
-            <p class="schedule__hint">
-              @if (emergency()) {
-                {{ t('hospital.emergencyHours') }}
-              } @else {
-                {{ t('hospital.regularHours') }}
-              }
-            </p>
-          </div>
-          <button
-            type="button"
-            class="btn emergency-btn"
-            [class.is-on]="emergency()"
-            (click)="toggleEmergency()"
-          >
-            {{ t('hospital.emergency') }}
-          </button>
-        </div>
-
         <div class="schedule__row">
           <div class="field field--compact">
             <label for="date">{{ t('hospital.date') }}</label>
@@ -76,6 +117,7 @@
               formControlName="preferredDate"
               [min]="minDate"
               (change)="onDateChange()"
+              (input)="onDateChange()"
             />
             @if (invalid('preferredDate')) {
               <p class="field-error">{{ t('hospital.required') }}</p>
@@ -86,7 +128,7 @@
             <label for="time">{{ t('hospital.time') }}</label>
             <select id="time" formControlName="preferredTime">
               <option value="">{{ t('hospital.timePlaceholder') }}</option>
-              @for (slot of timeSlots(); track slot) {
+              @for (slot of timeSlots; track slot) {
                 <option [value]="slot">{{ slot }}</option>
               }
             </select>
@@ -95,6 +137,8 @@
             }
           </div>
         </div>
+
+        <p class="schedule__note">{{ t('hospital.extraShippingNote') }}</p>
 
         @if (scheduleError()) {
           <p class="field-error">{{ scheduleError() }}</p>

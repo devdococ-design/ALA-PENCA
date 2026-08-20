@@ -54,6 +54,7 @@ export interface CreateAppointmentDto {
   phone: string;
   plantIssue: string;
   preferredDate: string;
+  notes?: string;
 }
 
 export interface GalleryItem {

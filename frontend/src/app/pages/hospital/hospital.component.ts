@@ -1,7 +1,44 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../../core/api.service';
 import { I18nService } from '../../core/i18n.service';
+
+type PackageItemId = 'pollo' | 'costilla' | 'combinado' | 'chamorro' | 'grande';
+type PackageGroupId = 'sencillo' | 'cueritos' | 'especial';
+
+type PackageItem = {
+  id: PackageItemId;
+  selected: boolean;
+  qty: number;
+};
+
+type PackageGroup = {
+  id: PackageGroupId;
+  items: PackageItem[];
+};
+
+const initialPackages = (): PackageGroup[] => [
+  {
+    id: 'sencillo',
+    items: [
+      { id: 'pollo', selected: false, qty: 0 },
+      { id: 'costilla', selected: false, qty: 0 },
+      { id: 'combinado', selected: false, qty: 0 },
+    ],
+  },
+  {
+    id: 'cueritos',
+    items: [
+      { id: 'pollo', selected: false, qty: 0 },
+      { id: 'costilla', selected: false, qty: 0 },
+      { id: 'chamorro', selected: false, qty: 0 },
+    ],
+  },
+  {
+    id: 'especial',
+    items: [{ id: 'grande', selected: false, qty: 0 }],
+  },
+];
 
 @Component({
   selector: 'app-hospital',
@@ -18,69 +55,69 @@ export class HospitalComponent {
   readonly status = signal<'idle' | 'ok' | 'error'>('idle');
   readonly submitting = signal(false);
   readonly toastVisible = signal(false);
-  readonly emergency = signal(false);
   readonly scheduleError = signal('');
-  readonly selectedDate = signal('');
+  readonly packagesError = signal('');
+  readonly packages = signal<PackageGroup[]>(initialPackages());
   readonly minDate = this.toDateInputValue(new Date());
+  readonly timeSlots = this.buildSlots(9, 16);
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly form = this.fb.nonNullable.group({
     customerName: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', [Validators.required, Validators.minLength(7)]],
-    plantIssue: ['', [Validators.required, Validators.minLength(5)]],
+    phone: ['', [Validators.required, Validators.pattern(/^(?=.*\d.*\d.*\d.*\d.*\d.*\d.*\d)[\d\s()+.-]+$/)]],
     preferredDate: ['', Validators.required],
     preferredTime: ['', Validators.required],
-  });
-
-  readonly timeSlots = computed(() => {
-    const dateValue = this.selectedDate();
-    if (!dateValue) return [];
-    const day = this.parseLocalDate(dateValue);
-    if (!day) return [];
-    const weekend = this.isWeekend(day);
-    if (weekend) {
-      return this.emergency() ? this.buildSlots(11, 14) : [];
-    }
-    return this.buildSlots(10, 17);
+    notes: [''],
   });
 
   t(path: string): string {
     return this.i18n.t(path);
   }
 
-  toggleEmergency(): void {
-    this.emergency.update((value) => !value);
-    this.scheduleError.set('');
-    this.validateSelectedDate();
-    this.syncTimeSelection();
+  toggleItem(groupId: PackageGroupId, itemId: PackageItemId, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.updateItem(groupId, itemId, (item) => ({
+      ...item,
+      selected: checked,
+      qty: checked ? Math.max(item.qty, 1) : 0,
+    }));
+    this.packagesError.set('');
+  }
+
+  changeQty(groupId: PackageGroupId, itemId: PackageItemId, delta: number): void {
+    this.updateItem(groupId, itemId, (item) => {
+      const qty = Math.max(0, item.qty + delta);
+      return { ...item, qty, selected: qty > 0 };
+    });
+    this.packagesError.set('');
   }
 
   onDateChange(): void {
-    this.selectedDate.set(this.form.controls.preferredDate.value);
     this.validateSelectedDate();
-    this.syncTimeSelection();
   }
 
-  invalid(control: 'customerName' | 'email' | 'phone' | 'plantIssue' | 'preferredDate' | 'preferredTime'): boolean {
+  invalid(control: 'customerName' | 'email' | 'phone' | 'preferredDate' | 'preferredTime'): boolean {
     const c = this.form.controls[control];
     return c.invalid && c.touched;
   }
 
   submit(): void {
     this.status.set('idle');
-    this.selectedDate.set(this.form.controls.preferredDate.value);
     this.validateSelectedDate();
-    this.syncTimeSelection();
-    if (this.form.invalid || this.scheduleError()) {
+
+    const orderLines = this.selectedLines();
+    if (orderLines.length === 0) {
+      this.packagesError.set(this.t('hospital.packagesRequired'));
+    }
+
+    if (this.form.invalid || this.scheduleError() || orderLines.length === 0) {
       this.form.markAllAsTouched();
       return;
     }
 
     const raw = this.form.getRawValue();
-    const preferredDate = this.emergency()
-      ? `EMERGENCIA · ${raw.preferredDate} ${raw.preferredTime}`
-      : `${raw.preferredDate} ${raw.preferredTime}`;
+    const preferredDate = `${raw.preferredDate} ${raw.preferredTime}`;
 
     this.submitting.set(true);
     this.api
@@ -88,8 +125,9 @@ export class HospitalComponent {
         customerName: raw.customerName.trim(),
         email: raw.email.trim(),
         phone: raw.phone.trim(),
-        plantIssue: raw.plantIssue.trim(),
+        plantIssue: orderLines.join(' · '),
         preferredDate,
+        notes: raw.notes.trim() || undefined,
       })
       .subscribe({
         next: () => {
@@ -98,13 +136,13 @@ export class HospitalComponent {
             customerName: '',
             email: '',
             phone: '',
-            plantIssue: '',
             preferredDate: '',
             preferredTime: '',
+            notes: '',
           });
-          this.emergency.set(false);
-          this.selectedDate.set('');
+          this.packages.set(initialPackages());
           this.scheduleError.set('');
+          this.packagesError.set('');
           this.submitting.set(false);
           this.showToast();
         },
@@ -123,17 +161,38 @@ export class HospitalComponent {
     }
   }
 
+  private selectedLines(): string[] {
+    return this.packages().flatMap((group) =>
+      group.items
+        .filter((item) => item.selected && item.qty > 0)
+        .map(
+          (item) =>
+            `${this.t(`hospital.groups.${group.id}`)}: ${this.t(`hospital.items.${item.id}`)} x${item.qty}`,
+        ),
+    );
+  }
+
+  private updateItem(
+    groupId: PackageGroupId,
+    itemId: PackageItemId,
+    updater: (item: PackageItem) => PackageItem,
+  ): void {
+    this.packages.update((groups) =>
+      groups.map((group) =>
+        group.id === groupId
+          ? {
+              ...group,
+              items: group.items.map((item) => (item.id === itemId ? updater(item) : item)),
+            }
+          : group,
+      ),
+    );
+  }
+
   private showToast(): void {
     this.toastVisible.set(true);
     if (this.toastTimer) clearTimeout(this.toastTimer);
     this.toastTimer = setTimeout(() => this.dismissToast(), 3500);
-  }
-
-  private syncTimeSelection(): void {
-    const time = this.form.controls.preferredTime.value;
-    if (time && !this.timeSlots().includes(time)) {
-      this.form.controls.preferredTime.setValue('');
-    }
   }
 
   private validateSelectedDate(): void {
@@ -153,33 +212,30 @@ export class HospitalComponent {
     today.setHours(0, 0, 0, 0);
     if (day < today) {
       this.scheduleError.set(this.t('hospital.pastDate'));
-      this.form.controls.preferredDate.setValue('');
       return;
     }
 
-    if (this.isWeekend(day) && !this.emergency()) {
+    if (!this.isWeekend(day)) {
       this.scheduleError.set(this.t('hospital.weekdayOnly'));
-      this.form.controls.preferredDate.setValue('');
-      this.form.controls.preferredTime.setValue('');
       return;
     }
 
     this.scheduleError.set('');
   }
 
+  private isWeekend(date: Date): boolean {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  }
+
   private buildSlots(startHour: number, endHour: number): string[] {
     const slots: string[] = [];
-    for (let minutes = startHour * 60; minutes < endHour * 60; minutes += 20) {
+    for (let minutes = startHour * 60; minutes <= endHour * 60; minutes += 20) {
       const hour = Math.floor(minutes / 60);
       const minute = minutes % 60;
       slots.push(`${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`);
     }
     return slots;
-  }
-
-  private isWeekend(date: Date): boolean {
-    const day = date.getDay();
-    return day === 0 || day === 6;
   }
 
   private parseLocalDate(value: string): Date | null {
