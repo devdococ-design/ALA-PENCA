@@ -8,14 +8,14 @@
       "blog": "Tips",
       "about": "Nosotros",
       "book": "Hacer pedido",
-      "location": "Cuautitlán Izcalli",
+      "location": "Tianguistongo",
       "prev": "Anterior",
       "next": "Siguiente"
     },
     "hero": {
       "brand": "ALA-PENCA",
       "tagline": "Pollos · Costillas · Chamorros",
-      "lead": "Pork & Chicken — sábados y domingos desde las 9:00 am, hasta agotar existencias.",
+      "lead": "Sábados y domingos desde las 9:00 am y hasta agotar existencias.",
       "ctaPrimary": "Ver menú",
       "ctaSecondary": "Llamar ahora"
     },
@@ -54,7 +54,7 @@
       "saleTitle": "Menú del día",
       "saleText": "Tres paquetes de pollo, costilla y chamorro — sencillos, con cueritos o el combinado grande.",
       "hospitalTitle": "Pedidos y contacto",
-      "hospitalText": "Escríbenos o llama al 771 323 3873. Estamos en Valle de la Hacienda, Cuautitlán Izcalli.",
+      "hospitalText": "Escríbenos o llama al 55 8022 5475 o al 55 3928 6932. Estamos en Valle de la Hacienda, Cuautitlán Izcalli.",
       "cta": "Llamar"
     },
     "gallery": {
@@ -85,11 +85,11 @@
         },
         {
           "q": "¿Dónde están?",
-          "a": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx."
+          "a": "Valle de la Hacienda, Cuautitlán Izcalli, Méx."
         },
         {
           "q": "¿Cómo hago un pedido?",
-          "a": "Llámanos al 771 323 3873 o síguenos en Instagram @ALA_PENCA."
+          "a": "Llámanos al 55 8022 5475 o al 55 3928 6932, o síguenos en Instagram @ALA_PENCA."
         },
         {
           "q": "¿Para cuántas personas son los paquetes?",
@@ -143,7 +143,7 @@
       "items": "Artículos",
       "total": "Total",
       "clear": "Vaciar carrito",
-      "note": "Confirma tu pedido por teléfono: 771 323 3873."
+      "note": "Confirma tu pedido por teléfono: 55 8022 5475 o 55 3928 6932."
     },
     "hospital": {
       "eyebrow": "Pedidos",
@@ -170,15 +170,16 @@
       "submit": "Enviar pedido",
       "success": "Pedido recibido. Te contactamos pronto.",
       "toastOk": "Pedido recibido correctamente",
-      "error": "No pudimos enviar la solicitud. Intenta de nuevo o llama al 771 323 3873."
+      "error": "No pudimos enviar la solicitud. Intenta de nuevo o llama al 55 8022 5475 o al 55 3928 6932."
     },
     "footer": {
       "tagline": "Pork & Chicken — pollos, costillas y chamorros",
-      "location": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx.",
-      "phone": "771 323 3873",
+      "location": "Valle de la Hacienda, Cuautitlán Izcalli, Méx.",
+      "phone": "55 8022 5475",
+      "phone2": "55 3928 6932",
       "hours": "Sábados y domingos desde las 9:00 am",
       "rights": "Todos los derechos reservados.",
-      "contactPending": "771 323 3873 · @ALA_PENCA"
+      "contactPending": "55 8022 5475 · 55 3928 6932 · @ALA_PENCA"
     },
     "admin": {
       "login": "Acceso admin",
@@ -298,7 +299,7 @@
       "saleTitle": "Day menu",
       "saleText": "Three packages of chicken, ribs, and pork shank — simple, with skins, or the large combo.",
       "hospitalTitle": "Orders & contact",
-      "hospitalText": "Message us or call 771 323 3873. We’re in Valle de la Hacienda, Cuautitlán Izcalli.",
+      "hospitalText": "Message us or call 55 8022 5475 or 55 3928 6932. We’re in Valle de la Hacienda, Cuautitlán Izcalli.",
       "cta": "Call"
     },
     "gallery": {
@@ -329,11 +330,11 @@
         },
         {
           "q": "Where are you located?",
-          "a": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx."
+          "a": "Valle de la Hacienda, Cuautitlán Izcalli, Méx."
         },
         {
           "q": "How do I order?",
-          "a": "Call 771 323 3873 or follow us on Instagram @ALA_PENCA."
+          "a": "Call 55 8022 5475 or 55 3928 6932, or follow us on Instagram @ALA_PENCA."
         },
         {
           "q": "How many people do packages serve?",
@@ -387,7 +388,7 @@
       "items": "Items",
       "total": "Total",
       "clear": "Clear cart",
-      "note": "Confirm your order by phone: 771 323 3873."
+      "note": "Confirm your order by phone: 55 8022 5475 or 55 3928 6932."
     },
     "hospital": {
       "eyebrow": "Orders",
@@ -414,15 +415,16 @@
       "submit": "Submit order",
       "success": "Order received. We’ll contact you soon.",
       "toastOk": "Order received successfully",
-      "error": "We couldn’t send the request. Try again or call 771 323 3873."
+      "error": "We couldn’t send the request. Try again or call 55 8022 5475 or 55 3928 6932."
     },
     "footer": {
       "tagline": "Pork & Chicken — chicken, ribs, and pork shank",
-      "location": "Valle de la Hacienda, 54715 Cuautitlán Izcalli, Méx.",
-      "phone": "771 323 3873",
+      "location": "Valle de la Hacienda, Cuautitlán Izcalli, Méx.",
+      "phone": "55 8022 5475",
+      "phone2": "55 3928 6932",
       "hours": "Saturdays & Sundays from 9:00 am",
       "rights": "All rights reserved.",
-      "contactPending": "771 323 3873 · @ALA_PENCA"
+      "contactPending": "55 8022 5475 · 55 3928 6932 · @ALA_PENCA"
     },
     "admin": {
       "login": "Admin access",

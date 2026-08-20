@@ -2,7 +2,7 @@
   position: relative;
   background: var(--green-950);
   color: rgba(244, 239, 230, 0.85);
-  padding-block: 3.5rem 2.5rem;
+  padding-block: 3.5rem 2.75rem;
   overflow: hidden;
 }
 
@@ -11,9 +11,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 4.5rem;
-  background: var(--orange-500);
-  clip-path: ellipse(70% 100% at 50% 100%);
+  height: 5rem;
+  background: linear-gradient(90deg, var(--orange-600), var(--orange-500), var(--orange-400));
+  clip-path: ellipse(75% 100% at 50% 100%);
   opacity: 0.95;
   pointer-events: none;
 }
@@ -31,6 +31,11 @@
   gap: 0.75rem;
   color: var(--cream, #f4efe6);
   margin-bottom: 0.85rem;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.logo:hover {
+  transform: translateY(-2px);
 }
 
 .logo__img {
@@ -38,6 +43,7 @@
   height: 3.25rem;
   border-radius: 50%;
   object-fit: cover;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .logo__text-wrap {
@@ -58,6 +64,7 @@
 .footer__brand p {
   max-width: 32ch;
   color: rgba(244, 239, 230, 0.65);
+  line-height: 1.55;
 }
 
 .footer__ig {
@@ -65,10 +72,12 @@
   margin-top: 0.75rem;
   font-weight: 700;
   color: var(--orange-400);
+  transition: color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
 }
 
 .footer__ig:hover {
   color: #fff;
+  transform: translateX(3px);
 }
 
 .footer__meta {
@@ -77,12 +86,19 @@
   font-size: 0.95rem;
 }
 
+.footer__phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+}
+
 .footer__phone {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: clamp(1.15rem, 3vw, 1.35rem);
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #fff;
+  transition: color 0.25s var(--ease-out);
 }
 
 .footer__phone:hover {

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, inject, signal } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, HostListener, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { I18nService } from '../../core/i18n.service';
@@ -12,10 +12,11 @@ import type { GalleryItem } from '../../core/models';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly i18n = inject(I18nService);
   private readonly api = inject(ApiService);
   private readonly route = inject(ActivatedRoute);
+  private sectionObserver: IntersectionObserver | null = null;
 
   readonly gallery = signal<GalleryItem[]>([]);
   readonly lightboxItem = signal<GalleryItem | null>(null);
@@ -31,6 +32,33 @@ export class HomeComponent implements OnInit {
       next: (items) => this.gallery.set(items),
       error: () => this.gallery.set(this.fallbackGallery()),
     });
+  }
+
+  ngAfterViewInit(): void {
+    if (typeof IntersectionObserver === 'undefined') {
+      document.querySelectorAll('app-home .section').forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    this.sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            this.sectionObserver?.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+
+    document.querySelectorAll('app-home .section').forEach((section) => {
+      this.sectionObserver?.observe(section);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sectionObserver?.disconnect();
   }
 
   @HostListener('document:keydown.escape')
