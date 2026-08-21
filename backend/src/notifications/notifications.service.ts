@@ -15,7 +15,8 @@ export class NotificationsService {
   private readonly logger = new Logger(NotificationsService.name);
 
   private get enabled(): boolean {
-    return process.env.NOTIFY_ENABLED !== 'false';
+    // Disabled until Twilio WhatsApp is configured later.
+    return process.env.NOTIFY_ENABLED === 'true';
   }
 
   private get contactPhones(): string[] {
@@ -50,10 +51,13 @@ export class NotificationsService {
       `🛒 Nuevo pedido #${order.id}`,
       `Cliente: ${order.customerName}`,
       `Tel: ${order.phone}`,
-      `Correo: ${order.email}`,
-      `Pedido: ${order.plantIssue}`,
-      `Fecha/hora: ${order.preferredDate}`,
     ];
+
+    if (order.email?.trim()) {
+      lines.push(`Correo: ${order.email.trim()}`);
+    }
+
+    lines.push(`Pedido: ${order.plantIssue}`, `Fecha/hora: ${order.preferredDate}`);
 
     if (order.notes?.trim()) {
       lines.push(`Notas: ${order.notes.trim()}`);

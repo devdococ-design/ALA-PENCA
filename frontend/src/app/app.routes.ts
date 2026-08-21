@@ -7,10 +7,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
-    path: 'hospital',
+    path: 'pedidos',
     loadComponent: () =>
       import('./pages/hospital/hospital.component').then((m) => m.HospitalComponent),
   },
+  { path: 'hospital', redirectTo: 'pedidos', pathMatch: 'full' },
   {
     path: 'tips',
     loadComponent: () => import('./pages/blog/blog.component').then((m) => m.BlogComponent),

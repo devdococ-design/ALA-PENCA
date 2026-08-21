@@ -19,8 +19,8 @@ export class AdminLoginComponent {
   readonly error = signal(false);
 
   readonly form = this.fb.nonNullable.group({
-    email: ['admin@ala-penca.local', [Validators.required, Validators.email]],
-    password: ['change-me', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
   });
 
   t(path: string): string {

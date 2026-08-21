@@ -198,45 +198,217 @@
   gap: 0.75rem;
 }
 
+.table__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.table__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--black);
+}
+
+.table__empty,
+.table__error {
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: rgba(242, 238, 228, 0.04);
+}
+
+.table__error {
+  color: #ff8f8f;
+  border-style: solid;
+  border-color: rgba(255, 107, 107, 0.35);
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.9rem;
-  background: var(--white);
+  background: rgba(42, 42, 46, 0.92);
   border: 1px solid var(--line);
+  border-radius: var(--radius);
 }
 
 .row strong {
   display: block;
-  color: var(--black);
+  color: var(--cream);
+  font-size: 1.05rem;
 }
 
 .row span,
 .row p {
-  color: var(--muted-ink);
+  color: var(--muted);
   font-size: 0.88rem;
 }
 
-.row__notes {
-  margin-top: 0.2rem;
-  color: var(--orange-400) !important;
+.row--history {
+  opacity: 0.92;
+  border-left: 3px solid var(--green-500);
+}
+
+.history-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.7rem 0.85rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(242, 238, 228, 0.06);
+}
+
+.history-filter__group {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 10.5rem;
+}
+
+.history-filter__group--grow {
+  flex: 1 1 16rem;
+}
+
+.history-filter__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--green-300);
+}
+
+.history-filter select,
+.history-filter input {
+  width: 100%;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  color-scheme: dark;
+  transition: border-color 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.history-filter select:focus,
+.history-filter input:focus {
+  outline: none;
+  border-color: rgba(240, 90, 40, 0.55);
+  box-shadow: 0 0 0 3px rgba(240, 90, 40, 0.18);
+}
+
+.history-filter__clear {
+  min-height: 2.4rem;
+}
+
+.sheet {
+  overflow-x: auto;
+  border: 1px solid #3d4a38;
+  border-radius: 6px;
+  background: #1c2418;
+}
+
+.sheet__table {
+  width: 100%;
+  min-width: 64rem;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.sheet__table th,
+.sheet__table td {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #3d4a38;
+  text-align: left;
+  vertical-align: top;
+  color: var(--cream);
+}
+
+.sheet__table th {
+  position: sticky;
+  top: 0;
+  background: #2f3d2b;
+  color: #f4efe6;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sheet__table tbody tr:nth-child(even) {
+  background: #243022;
+}
+
+.sheet__table tbody tr:nth-child(odd) {
+  background: #1c2418;
+}
+
+.sheet__table tfoot td {
+  background: #2f3d2b;
+  font-weight: 700;
+}
+
+.sheet__num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.35rem;
+}
+
+.pager__range,
+.pager__page {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.pager__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pager__actions button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .row__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+  align-items: flex-start;
 }
 
 .row__actions button {
   border: 1px solid var(--line);
   background: var(--paper);
+  color: var(--cream);
   padding: 0.35rem 0.65rem;
   cursor: pointer;
   font-size: 0.82rem;
   font-weight: 600;
+  border-radius: var(--radius);
+}
+
+.row__actions button:hover {
+  border-color: rgba(240, 90, 40, 0.55);
+  color: var(--orange-400);
 }
 
 .password-form {

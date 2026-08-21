@@ -47,13 +47,25 @@
 
     <div class="tabs">
       <button type="button" [class.is-on]="tab() === 'appointments'" (click)="setTab('appointments')">{{ t('admin.appointments') }}</button>
+      <button type="button" [class.is-on]="tab() === 'history'" (click)="setTab('history')">{{ t('admin.historyTab') }}</button>
       <button type="button" [class.is-on]="tab() === 'gallery'" (click)="setTab('gallery')">{{ t('admin.galleryTab') }}</button>
       <button type="button" [class.is-on]="tab() === 'password'" (click)="setTab('password')">{{ t('admin.passwordTab') }}</button>
     </div>
 
     @if (tab() === 'appointments') {
       <div class="panel table">
-        @for (item of appointments(); track item.id) {
+        <div class="table__head">
+          <h2 class="table__title">{{ t('admin.appointments') }}</h2>
+          <button type="button" class="btn btn--ghost" (click)="reload()">{{ t('admin.refresh') }}</button>
+        </div>
+
+        @if (appointmentsError()) {
+          <p class="table__error">{{ appointmentsError() }}</p>
+        } @else if (activeOrders().length === 0) {
+          <p class="table__empty">{{ t('admin.appointmentsEmpty') }}</p>
+        }
+
+        @for (item of activeOrders(); track item.id) {
           <div class="row">
             <div>
               <strong>{{ item.customerName }}</strong>
@@ -61,12 +73,134 @@
               @if (item.notes) {
                 <p class="row__notes">{{ item.notes }}</p>
               }
-              <span>{{ item.preferredDate }} · {{ item.phone }} · {{ item.status }}</span>
+              <span>{{ item.preferredDate }} · {{ item.phone }} · {{ statusLabel(item.status) }}</span>
             </div>
             <div class="row__actions">
-              <button type="button" (click)="setStatus(item.id, 'CONFIRMED')">Confirmar</button>
-              <button type="button" (click)="setStatus(item.id, 'DONE')">Hecha</button>
-              <button type="button" (click)="setStatus(item.id, 'CANCELLED')">Cancelar</button>
+              @if (item.status !== 'CANCELLED') {
+                <button type="button" (click)="setStatus(item.id, 'CONFIRMED')">{{ t('admin.actionConfirm') }}</button>
+                <button type="button" (click)="setStatus(item.id, 'DONE')">{{ t('admin.actionDelivered') }}</button>
+                <button type="button" (click)="setStatus(item.id, 'CANCELLED')">{{ t('admin.actionCancel') }}</button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    @if (tab() === 'history') {
+      <div class="panel table">
+        <div class="table__head">
+          <h2 class="table__title">{{ t('admin.historyTab') }}</h2>
+          <button type="button" class="btn btn--ghost" (click)="reload()">{{ t('admin.refresh') }}</button>
+        </div>
+
+        <div class="history-filter">
+          <div class="history-filter__group">
+            <label class="history-filter__label" for="history-filter-by">{{ t('admin.historyFilterBy') }}</label>
+            <select id="history-filter-by" [value]="historyFilterBy()" (change)="onHistoryFilterBy($event)">
+              <option value="customer">{{ t('admin.historyFilterCustomer') }}</option>
+              <option value="phone">{{ t('admin.historyFilterPhone') }}</option>
+              <option value="date">{{ t('admin.historyFilterDate') }}</option>
+            </select>
+          </div>
+
+          <div class="history-filter__group history-filter__group--grow">
+            @if (historyFilterBy() === 'date') {
+              <label class="history-filter__label" for="history-filter-value">{{ t('admin.historyFilterDate') }}</label>
+              <input
+                id="history-filter-value"
+                type="date"
+                [value]="historyFilterDate()"
+                (change)="onHistoryFilterDate($event)"
+              />
+            } @else {
+              <label class="history-filter__label" for="history-filter-value">
+                {{ historyFilterBy() === 'phone' ? t('admin.historyFilterPhone') : t('admin.historyFilterCustomer') }}
+              </label>
+              <input
+                id="history-filter-value"
+                type="text"
+                [value]="historyFilterText()"
+                (input)="onHistoryFilterText($event)"
+                [attr.placeholder]="
+                  historyFilterBy() === 'phone'
+                    ? t('admin.historyFilterPhonePlaceholder')
+                    : t('admin.historyFilterCustomerPlaceholder')
+                "
+              />
+            }
+          </div>
+
+          <button type="button" class="btn btn--ghost history-filter__clear" (click)="clearHistoryFilter()">
+            {{ t('admin.historyFilterClear') }}
+          </button>
+        </div>
+
+        @if (appointmentsError()) {
+          <p class="table__error">{{ appointmentsError() }}</p>
+        } @else if (deliveredCount() === 0) {
+          <p class="table__empty">{{ t('admin.historyEmpty') }}</p>
+        } @else if (historyOrders().length === 0) {
+          <p class="table__empty">{{ t('admin.historyNoResults') }}</p>
+        } @else {
+          <div class="sheet">
+            <table class="sheet__table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>{{ t('admin.historyColDate') }}</th>
+                  <th>{{ t('admin.historyColCustomer') }}</th>
+                  <th>{{ t('admin.historyColPhone') }}</th>
+                  <th>{{ t('admin.historyColPackages') }}</th>
+                  <th>{{ t('admin.historyColNotes') }}</th>
+                  <th>{{ t('admin.historyColTotal') }}</th>
+                  <th>{{ t('admin.historyColPayment') }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of pagedHistory(); track item.id) {
+                  <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.preferredDate }}</td>
+                    <td>{{ item.customerName }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.plantIssue }}</td>
+                    <td>{{ item.notes || '—' }}</td>
+                    <td class="sheet__num">{{ formatMoney(orderTotal(item)) }}</td>
+                    <td>{{ paymentLabel(item.paymentMethod) }}</td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="6">{{ t('admin.historyPageTotal') }}</td>
+                  <td class="sheet__num">{{ formatMoney(historyGrandTotal()) }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <div class="pager">
+            <p class="pager__range">{{ historyRangeLabel() }}</p>
+            <div class="pager__actions">
+              <button
+                type="button"
+                class="btn btn--ghost"
+                (click)="prevHistoryPage()"
+                [disabled]="historyPage() <= 1"
+              >
+                {{ t('admin.historyPrev') }}
+              </button>
+              <span class="pager__page">{{ historyPage() }} / {{ historyPageCount() }}</span>
+              <button
+                type="button"
+                class="btn btn--ghost"
+                (click)="nextHistoryPage()"
+                [disabled]="historyPage() >= historyPageCount()"
+              >
+                {{ t('admin.historyNext') }}
+              </button>
             </div>
           </div>
         }

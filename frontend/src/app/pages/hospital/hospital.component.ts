@@ -17,6 +17,12 @@ type PackageGroup = {
   items: PackageItem[];
 };
 
+const PACKAGE_PRICES: Record<PackageGroupId, number> = {
+  sencillo: 190,
+  cueritos: 190,
+  especial: 290,
+};
+
 const initialPackages = (): PackageGroup[] => [
   {
     id: 'sencillo',
@@ -57,22 +63,29 @@ export class HospitalComponent {
   readonly toastVisible = signal(false);
   readonly scheduleError = signal('');
   readonly packagesError = signal('');
+  readonly focusTarget = signal<string | null>(null);
   readonly packages = signal<PackageGroup[]>(initialPackages());
   readonly minDate = this.toDateInputValue(new Date());
   readonly timeSlots = this.buildSlots(9, 16);
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
+  private focusTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly form = this.fb.nonNullable.group({
     customerName: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.email]],
     phone: ['', [Validators.required, Validators.pattern(/^(?=.*\d.*\d.*\d.*\d.*\d.*\d.*\d)[\d\s()+.-]+$/)]],
     preferredDate: ['', Validators.required],
     preferredTime: ['', Validators.required],
     notes: [''],
+    paymentMethod: ['cash' as 'cash' | 'transfer' | 'later', Validators.required],
   });
 
   t(path: string): string {
     return this.i18n.t(path);
+  }
+
+  menuPackages() {
+    return this.i18n.list('menu.packages');
   }
 
   toggleItem(groupId: PackageGroupId, itemId: PackageItemId, event: Event): void {
@@ -97,9 +110,22 @@ export class HospitalComponent {
     this.validateSelectedDate();
   }
 
-  invalid(control: 'customerName' | 'email' | 'phone' | 'preferredDate' | 'preferredTime'): boolean {
+  invalid(
+    control: 'customerName' | 'email' | 'phone' | 'preferredDate' | 'preferredTime' | 'paymentMethod',
+  ): boolean {
     const c = this.form.controls[control];
     return c.invalid && c.touched;
+  }
+
+  orderTotal(): number {
+    return this.packages().reduce(
+      (sum, group) =>
+        sum +
+        group.items
+          .filter((item) => item.selected && item.qty > 0)
+          .reduce((inner, item) => inner + item.qty * PACKAGE_PRICES[group.id], 0),
+      0,
+    );
   }
 
   submit(): void {
@@ -113,6 +139,7 @@ export class HospitalComponent {
 
     if (this.form.invalid || this.scheduleError() || orderLines.length === 0) {
       this.form.markAllAsTouched();
+      this.focusFirstInvalid(orderLines.length === 0);
       return;
     }
 
@@ -123,11 +150,13 @@ export class HospitalComponent {
     this.api
       .createAppointment({
         customerName: raw.customerName.trim(),
-        email: raw.email.trim(),
+        email: raw.email.trim() || undefined,
         phone: raw.phone.trim(),
         plantIssue: orderLines.join(' · '),
         preferredDate,
         notes: raw.notes.trim() || undefined,
+        total: this.orderTotal(),
+        paymentMethod: raw.paymentMethod,
       })
       .subscribe({
         next: () => {
@@ -139,6 +168,7 @@ export class HospitalComponent {
             preferredDate: '',
             preferredTime: '',
             notes: '',
+            paymentMethod: 'cash',
           });
           this.packages.set(initialPackages());
           this.scheduleError.set('');
@@ -187,6 +217,57 @@ export class HospitalComponent {
           : group,
       ),
     );
+  }
+
+  private focusFirstInvalid(missingPackages: boolean): void {
+    const order: Array<{ key: string; selector: string; check: () => boolean }> = [
+      {
+        key: 'customerName',
+        selector: '#name',
+        check: () => this.form.controls.customerName.invalid,
+      },
+      {
+        key: 'phone',
+        selector: '#phone',
+        check: () => this.form.controls.phone.invalid,
+      },
+      {
+        key: 'email',
+        selector: '#email',
+        check: () => this.form.controls.email.invalid,
+      },
+      {
+        key: 'packages',
+        selector: '#packages',
+        check: () => missingPackages,
+      },
+      {
+        key: 'preferredDate',
+        selector: '#date',
+        check: () => this.form.controls.preferredDate.invalid || !!this.scheduleError(),
+      },
+      {
+        key: 'preferredTime',
+        selector: '#time',
+        check: () => this.form.controls.preferredTime.invalid,
+      },
+    ];
+
+    const target = order.find((item) => item.check());
+    if (!target) return;
+
+    this.focusTarget.set(target.key);
+    if (this.focusTimer) clearTimeout(this.focusTimer);
+    this.focusTimer = setTimeout(() => this.focusTarget.set(null), 1800);
+
+    requestAnimationFrame(() => {
+      const el = document.querySelector<HTMLElement>(target.selector);
+      if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (typeof el.focus === 'function') {
+        el.focus({ preventScroll: true });
+      }
+    });
   }
 
   private showToast(): void {

@@ -36,6 +36,8 @@ export interface BlogPost {
   createdAt: string;
 }
 
+export type PaymentMethod = 'cash' | 'transfer' | 'later';
+
 export interface Appointment {
   id: number;
   customerName: string;
@@ -45,16 +47,21 @@ export interface Appointment {
   preferredDate: string;
   status: 'PENDING' | 'CONFIRMED' | 'DONE' | 'CANCELLED';
   notes?: string;
+  total?: number | null;
+  paymentMethod?: PaymentMethod | null;
+  deliveredAt?: string | null;
   createdAt: string;
 }
 
 export interface CreateAppointmentDto {
   customerName: string;
-  email: string;
+  email?: string;
   phone: string;
   plantIssue: string;
   preferredDate: string;
   notes?: string;
+  total?: number;
+  paymentMethod?: PaymentMethod;
 }
 
 export interface GalleryItem {

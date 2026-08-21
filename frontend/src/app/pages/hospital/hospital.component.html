@@ -4,16 +4,23 @@
       <p class="section__eyebrow">{{ t('hospital.eyebrow') }}</p>
       <h1 class="section__title">{{ t('hospital.title') }}</h1>
       <p class="section__lead">{{ t('hospital.lead') }}</p>
-      <div class="visual">
-        <img
-          src="https://images.unsplash.com/photo-1459156212016-c8128e47f1d1?auto=format&fit=crop&w=1000&q=80"
-          alt=""
-        />
+      <div class="menu-preview">
+        @for (pkg of menuPackages(); track pkg['name']) {
+          <article class="menu-card">
+            <div class="menu-card__top">
+              <h3>{{ pkg['name'] }}</h3>
+              <span class="menu-card__price">{{ pkg['price'] }}</span>
+            </div>
+            <p class="menu-card__options">{{ pkg['options'] }}</p>
+            <p class="menu-card__desc">{{ pkg['desc'] }}</p>
+            <p class="menu-card__serves">{{ pkg['serves'] }}</p>
+          </article>
+        }
       </div>
     </div>
 
     <form class="form" [formGroup]="form" (ngSubmit)="submit()">
-      <div class="field">
+      <div class="field" [class.is-attention]="focusTarget() === 'customerName'">
         <label for="name">{{ t('hospital.name') }}</label>
         <input id="name" formControlName="customerName" autocomplete="name" />
         @if (invalid('customerName')) {
@@ -21,7 +28,7 @@
         }
       </div>
 
-      <div class="field">
+      <div class="field" [class.is-attention]="focusTarget() === 'phone'">
         <label for="phone">{{ t('hospital.phone') }} *</label>
         <input
           id="phone"
@@ -38,15 +45,20 @@
         }
       </div>
 
-      <div class="field">
-        <label for="email">{{ t('hospital.email') }}</label>
+      <div class="field" [class.is-attention]="focusTarget() === 'email'">
+        <label for="email">{{ t('hospital.email') }} ({{ t('hospital.optional') }})</label>
         <input id="email" type="email" formControlName="email" autocomplete="email" />
         @if (invalid('email')) {
           <p class="field-error">{{ t('hospital.emailInvalid') }}</p>
         }
       </div>
 
-      <div class="packages">
+      <div
+        id="packages"
+        class="packages"
+        tabindex="-1"
+        [class.is-attention]="focusTarget() === 'packages'"
+      >
         <p class="schedule__label">{{ t('hospital.packages') }}</p>
         <p class="schedule__hint">{{ t('hospital.packagesHint') }}</p>
 
@@ -109,7 +121,10 @@
 
       <div class="schedule">
         <div class="schedule__row">
-          <div class="field field--compact">
+          <div
+            class="field field--compact"
+            [class.is-attention]="focusTarget() === 'preferredDate'"
+          >
             <label for="date">{{ t('hospital.date') }}</label>
             <input
               id="date"
@@ -124,7 +139,10 @@
             }
           </div>
 
-          <div class="field field--compact">
+          <div
+            class="field field--compact"
+            [class.is-attention]="focusTarget() === 'preferredTime'"
+          >
             <label for="time">{{ t('hospital.time') }}</label>
             <select id="time" formControlName="preferredTime">
               <option value="">{{ t('hospital.timePlaceholder') }}</option>
@@ -144,6 +162,17 @@
           <p class="field-error">{{ scheduleError() }}</p>
         }
       </div>
+
+      <div class="field" [class.is-attention]="focusTarget() === 'paymentMethod'">
+        <label for="payment">{{ t('hospital.payment') }}</label>
+        <select id="payment" formControlName="paymentMethod">
+          <option value="cash">{{ t('hospital.paymentCash') }}</option>
+          <option value="transfer">{{ t('hospital.paymentTransfer') }}</option>
+          <option value="later">{{ t('hospital.paymentLater') }}</option>
+        </select>
+      </div>
+
+      <p class="order-total">{{ t('hospital.total') }}: ${{ orderTotal() }}</p>
 
       <button class="btn btn--primary" type="submit" [disabled]="submitting()">
         {{ t('hospital.submit') }}

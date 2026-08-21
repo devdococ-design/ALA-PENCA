@@ -54,16 +54,19 @@ model BlogPost {
 }
 
 model Appointment {
-  id            Int      @id @default(autoincrement())
-  customerName  String
-  email         String
-  phone         String
-  plantIssue    String
-  preferredDate String
-  status        String   @default("PENDING")
-  notes         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             Int       @id @default(autoincrement())
+  customerName   String
+  email          String
+  phone          String
+  plantIssue     String
+  preferredDate  String
+  status         String    @default("PENDING")
+  notes          String?
+  total          Float?
+  paymentMethod  String?
+  deliveredAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model SiteSetting {

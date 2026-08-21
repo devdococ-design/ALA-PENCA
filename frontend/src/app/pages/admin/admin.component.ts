@@ -32,8 +32,9 @@ export class AdminComponent implements OnInit, OnDestroy {
   readonly adminName = 'Admin';
   readonly locationName = 'Cuautitlán Izcalli';
 
-  readonly tab = signal<'appointments' | 'password' | 'gallery'>('appointments');
+  readonly tab = signal<'appointments' | 'history' | 'password' | 'gallery'>('appointments');
   readonly appointments = signal<Appointment[]>([]);
+  readonly appointmentsError = signal('');
   readonly galleryItems = signal<GalleryItem[]>([]);
   readonly passwordStatus = signal<'idle' | 'ok' | 'error'>('idle');
   readonly passwordError = signal('');
@@ -41,6 +42,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   readonly galleryPreview = signal('');
   readonly galleryStatus = signal<'idle' | 'ok' | 'error'>('idle');
   readonly galleryMessage = signal('');
+  readonly historyPage = signal(1);
+  readonly historyPageSize = 10;
+  readonly historyFilterBy = signal<'customer' | 'phone' | 'date'>('customer');
+  readonly historyFilterText = signal('');
+  readonly historyFilterDate = signal('');
 
   readonly now = signal(new Date());
   readonly greeting = signal('');
@@ -96,19 +102,165 @@ export class AdminComponent implements OnInit, OnDestroy {
   }
 
   pendingCount(): number {
-    return this.appointments().filter((a) => a.status === 'PENDING').length;
+    return this.activeOrders().filter((a) => a.status === 'PENDING' || a.status === 'CONFIRMED').length;
+  }
+
+  activeOrders(): Appointment[] {
+    return this.appointments().filter((a) => a.status !== 'DONE');
+  }
+
+  deliveredCount(): number {
+    return this.appointments().filter((a) => a.status === 'DONE').length;
+  }
+
+  historyOrders(): Appointment[] {
+    const field = this.historyFilterBy();
+    const text = this.historyFilterText().trim().toLowerCase();
+    const date = this.historyFilterDate();
+    const phoneQuery = this.normalizePhone(this.historyFilterText());
+
+    return this.appointments()
+      .filter((a) => a.status === 'DONE')
+      .filter((a) => {
+        if (field === 'date') {
+          if (!date) return true;
+          return (a.preferredDate || '').startsWith(date);
+        }
+        if (field === 'phone') {
+          if (!phoneQuery) return true;
+          return this.normalizePhone(a.phone).includes(phoneQuery);
+        }
+        if (!text) return true;
+        return a.customerName.toLowerCase().includes(text);
+      })
+      .sort((a, b) => {
+        const aDate = a.deliveredAt || a.createdAt || a.preferredDate || '';
+        const bDate = b.deliveredAt || b.createdAt || b.preferredDate || '';
+        return String(bDate).localeCompare(String(aDate));
+      });
+  }
+
+  onHistoryFilterBy(event: Event): void {
+    const value = (event.target as HTMLSelectElement).value as 'customer' | 'phone' | 'date';
+    this.historyFilterBy.set(value);
+    this.historyFilterText.set('');
+    this.historyFilterDate.set('');
+    this.historyPage.set(1);
+  }
+
+  onHistoryFilterText(event: Event): void {
+    this.historyFilterText.set((event.target as HTMLInputElement).value);
+    this.historyPage.set(1);
+  }
+
+  onHistoryFilterDate(event: Event): void {
+    this.historyFilterDate.set((event.target as HTMLInputElement).value);
+    this.historyPage.set(1);
+  }
+
+  clearHistoryFilter(): void {
+    this.historyFilterText.set('');
+    this.historyFilterDate.set('');
+    this.historyPage.set(1);
+  }
+
+  private normalizePhone(value: string): string {
+    return value.replace(/\D+/g, '');
+  }
+
+  pagedHistory(): Appointment[] {
+    const page = this.historyPage();
+    const start = (page - 1) * this.historyPageSize;
+    return this.historyOrders().slice(start, start + this.historyPageSize);
+  }
+
+  historyPageCount(): number {
+    return Math.max(1, Math.ceil(this.historyOrders().length / this.historyPageSize));
+  }
+
+  historyRangeLabel(): string {
+    const total = this.historyOrders().length;
+    if (total === 0) return '';
+    const start = (this.historyPage() - 1) * this.historyPageSize + 1;
+    const end = Math.min(this.historyPage() * this.historyPageSize, total);
+    return this.t('admin.historyRange')
+      .replace('{start}', String(start))
+      .replace('{end}', String(end))
+      .replace('{total}', String(total));
+  }
+
+  prevHistoryPage(): void {
+    this.historyPage.set(Math.max(1, this.historyPage() - 1));
+  }
+
+  nextHistoryPage(): void {
+    this.historyPage.set(Math.min(this.historyPageCount(), this.historyPage() + 1));
+  }
+
+  orderTotal(item: Appointment): number {
+    if (typeof item.total === 'number') return item.total;
+    return this.estimateTotal(item.plantIssue);
+  }
+
+  historyGrandTotal(): number {
+    return this.pagedHistory().reduce((sum, item) => sum + this.orderTotal(item), 0);
+  }
+
+  formatMoney(value: number): string {
+    return `$${value.toLocaleString('es-MX', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  }
+
+  paymentLabel(method?: string | null): string {
+    if (method === 'cash') return this.t('admin.paymentCash');
+    if (method === 'transfer') return this.t('admin.paymentTransfer');
+    if (method === 'later') return this.t('admin.paymentLater');
+    return this.t('admin.paymentUnknown');
+  }
+
+  private estimateTotal(packages: string): number {
+    return packages.split('·').reduce((sum, part) => {
+      const qty = Number(/x\s*(\d+)/i.exec(part)?.[1] ?? 1);
+      const text = part.toLowerCase();
+      if (/especial|grande/.test(text)) return sum + 290 * qty;
+      if (/sencillo|cueritos|pollo|costilla|combinado|chamorro/.test(text)) return sum + 190 * qty;
+      return sum;
+    }, 0);
+  }
+
+  statusLabel(status: Appointment['status']): string {
+    switch (status) {
+      case 'PENDING':
+        return this.t('admin.statusPending');
+      case 'CONFIRMED':
+        return this.t('admin.statusConfirmed');
+      case 'DONE':
+        return this.t('admin.statusDelivered');
+      case 'CANCELLED':
+        return this.t('admin.statusCancelled');
+      default:
+        return status;
+    }
   }
 
   labelForWeather(code: number): string {
     return this.weatherLabel(code);
   }
 
-  setTab(tab: 'appointments' | 'password' | 'gallery'): void {
+  setTab(tab: 'appointments' | 'history' | 'password' | 'gallery'): void {
     this.tab.set(tab);
     this.passwordStatus.set('idle');
     this.passwordError.set('');
     this.galleryStatus.set('idle');
     this.galleryMessage.set('');
+    if (tab === 'history') {
+      this.historyPage.set(1);
+      this.historyFilterBy.set('customer');
+      this.historyFilterText.set('');
+      this.historyFilterDate.set('');
+    }
+    if (tab === 'appointments' || tab === 'history' || tab === 'gallery') {
+      this.reload();
+    }
   }
 
   mediaUrl(path: string): string {
@@ -205,8 +357,28 @@ export class AdminComponent implements OnInit, OnDestroy {
   reload(): void {
     const token = this.auth.token();
     if (!token) return;
-    this.api.adminAppointments(token).subscribe((items) => this.appointments.set(items));
-    this.api.adminGallery(token).subscribe((items) => this.galleryItems.set(items));
+
+    this.appointmentsError.set('');
+    this.api.adminAppointments(token).subscribe({
+      next: (items) => {
+        this.appointments.set(items);
+        this.historyPage.set(Math.min(this.historyPage(), this.historyPageCount()));
+      },
+      error: (err) => {
+        this.appointments.set([]);
+        if (err?.status === 401) {
+          this.auth.logout();
+          return;
+        }
+        this.appointmentsError.set(this.t('admin.appointmentsLoadFail'));
+      },
+    });
+    this.api.adminGallery(token).subscribe({
+      next: (items) => this.galleryItems.set(items),
+      error: (err) => {
+        if (err?.status === 401) this.auth.logout();
+      },
+    });
   }
 
   setStatus(id: number, status: Appointment['status']): void {

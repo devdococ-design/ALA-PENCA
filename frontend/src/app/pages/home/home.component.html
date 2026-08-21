@@ -49,17 +49,34 @@
     <h2 class="section__title">{{ t('services.title') }}</h2>
     <p class="section__lead">{{ t('services.lead') }}</p>
 
-    <div class="services__grid">
-      <article>
-        <h3>{{ t('services.saleTitle') }}</h3>
-        <p>{{ t('services.saleText') }}</p>
-        <a routerLink="/" fragment="menu" class="text-link">{{ t('hero.ctaPrimary') }} →</a>
-      </article>
-      <article>
-        <h3>{{ t('services.hospitalTitle') }}</h3>
-        <p>{{ t('services.hospitalText') }}</p>
-        <a routerLink="/hospital" class="text-link">{{ t('nav.book') }} →</a>
-      </article>
+    <ol class="order-steps">
+      <li class="order-steps__item">
+        <span class="order-steps__num" aria-hidden="true">1</span>
+        <div>
+          <h3>{{ t('services.step1Title') }}</h3>
+          <p>{{ t('services.step1Text') }}</p>
+        </div>
+      </li>
+      <li class="order-steps__item">
+        <span class="order-steps__num" aria-hidden="true">2</span>
+        <div>
+          <h3>{{ t('services.step2Title') }}</h3>
+          <p>{{ t('services.step2Text') }}</p>
+        </div>
+      </li>
+      <li class="order-steps__item">
+        <span class="order-steps__num" aria-hidden="true">3</span>
+        <div>
+          <h3>{{ t('services.step3Title') }}</h3>
+          <p>{{ t('services.step3Text') }}</p>
+        </div>
+      </li>
+    </ol>
+
+    <p class="order-steps__tip">{{ t('services.tip') }}</p>
+
+    <div class="order-steps__cta">
+      <a routerLink="/pedidos" class="btn btn--primary">{{ t('services.cta') }}</a>
     </div>
   </div>
 </section>

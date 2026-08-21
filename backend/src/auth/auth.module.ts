@@ -4,13 +4,14 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
+import { getJwtSecret } from './jwt-secret';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'ala-penca-dev-secret',
-      signOptions: { expiresIn: '7d' },
+      secret: getJwtSecret(),
+      signOptions: { expiresIn: process.env.NODE_ENV === 'production' ? '12h' : '7d' },
     }),
   ],
   controllers: [AuthController],

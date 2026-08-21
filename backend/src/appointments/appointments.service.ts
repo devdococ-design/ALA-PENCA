@@ -13,7 +13,18 @@ export class AppointmentsService {
   ) {}
 
   async create(dto: CreateAppointmentDto) {
-    const appointment = await this.prisma.appointment.create({ data: dto });
+    const appointment = await this.prisma.appointment.create({
+      data: {
+        customerName: dto.customerName,
+        email: dto.email?.trim() || '',
+        phone: dto.phone,
+        plantIssue: dto.plantIssue,
+        preferredDate: dto.preferredDate,
+        notes: dto.notes,
+        total: dto.total ?? null,
+        paymentMethod: dto.paymentMethod || null,
+      },
+    });
 
     void this.notifications.notifyNewOrder(appointment).catch((error) => {
       this.logger.error(`Order notification failed for #${appointment.id}`, error);
@@ -30,7 +41,10 @@ export class AppointmentsService {
     try {
       return await this.prisma.appointment.update({
         where: { id },
-        data: { status },
+        data: {
+          status,
+          deliveredAt: status === 'DONE' ? new Date() : null,
+        },
       });
     } catch {
       throw new NotFoundException('Appointment not found');
